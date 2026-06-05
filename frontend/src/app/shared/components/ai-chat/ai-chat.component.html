@@ -1,0 +1,63 @@
+<div class="chat-container">
+  <!-- Chat Button -->
+  <button class="chat-toggle-btn" (click)="toggleChat()" [class.open]="isOpen">
+    <mat-icon>{{ isOpen ? 'close' : 'forum' }}</mat-icon>
+    <span class="pulse-ring" *ngIf="!isOpen"></span>
+  </button>
+
+  <!-- Chat Window -->
+  <div class="chat-window" *ngIf="isOpen">
+    <!-- Header -->
+    <div class="chat-header">
+      <div class="header-left">
+        <div class="bot-avatar">
+          <mat-icon>auto_awesome</mat-icon>
+          <span class="status-online"></span>
+        </div>
+        <div class="header-titles">
+          <h3>CashFlow AI</h3>
+          <span class="sub">Capital Ledgers & RAG Core</span>
+        </div>
+      </div>
+      <button class="header-close-btn" (click)="toggleChat()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    
+    <!-- Messages Body -->
+    <div class="chat-body" #chatBody>
+      <div *ngFor="let msg of messages" class="chat-bubble-wrapper" [ngClass]="msg.sender">
+        <div class="bubble-avatar" *ngIf="msg.sender === 'ai'">
+          <mat-icon>smart_toy</mat-icon>
+        </div>
+        <div class="chat-bubble" [ngClass]="msg.sender">
+          {{ msg.text }}
+        </div>
+      </div>
+
+      <div *ngIf="isLoading" class="chat-bubble-wrapper ai">
+        <div class="bubble-avatar">
+          <mat-icon>smart_toy</mat-icon>
+        </div>
+        <div class="chat-bubble ai loading">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Suggestion Chips -->
+    <div class="chat-suggestions" *ngIf="suggestedPrompts && suggestedPrompts.length && !isLoading">
+      <button *ngFor="let chip of suggestedPrompts" (click)="selectPrompt(chip)" class="suggestion-chip">
+        {{ chip }}
+      </button>
+    </div>
+    
+    <!-- Footer Input -->
+    <div class="chat-input-area">
+      <input type="text" [(ngModel)]="userInput" (keyup.enter)="sendMessage()" placeholder="Ask about your finances..." />
+      <button class="send-btn" (click)="sendMessage()" [disabled]="!userInput.trim() && !isLoading">
+        <mat-icon>send</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>

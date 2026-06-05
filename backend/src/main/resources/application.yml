@@ -1,0 +1,39 @@
+spring:
+  datasource:
+    # Use a provided JDBC url (SPRING_DATASOURCE_URL) if set, otherwise fall back
+    # to a Supabase/Postgres URL built from SUPABASE_DB_* env vars; if neither is
+    # available, use an in-memory H2 database for local development.
+    # Default to in-memory H2 for local development. To use Postgres/Supabase,
+    # set `SPRING_DATASOURCE_URL` before starting (or set the SUPABASE_* vars
+    # and provide a `SPRING_DATASOURCE_URL` that uses them).
+    url: ${SPRING_DATASOURCE_URL:jdbc:h2:mem:expensetracker;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE}
+    username: ${SPRING_DATASOURCE_USER:sa}
+    password: ${SPRING_DATASOURCE_PASSWORD:}
+    driver-class-name: ${SPRING_DATASOURCE_DRIVER:org.h2.Driver}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+  flyway:
+    enabled: false
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+
+server:
+  port: 8080
+  max-http-header-size: 65536
+  max-http-request-header-size: 65536
+
+security:
+  jwt:
+    secret: ${JWT_SECRET:ReplaceWithSecureSecretKeyLongerThan512BitsForLocalDevelopmentAndTestingPurposesFlawlessly}
+    expiration-ms: 86400000
+
+gemini:
+  api-url: ${GEMINI_API_URL:https://api.google.com/gemini}
+  api-key: ${GEMINI_API_KEY:YOUR_API_KEY}
+
+app:
+  api:
+    base-path: /api

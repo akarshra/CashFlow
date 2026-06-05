@@ -1,0 +1,290 @@
+.budgets-page {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+/* Header styling */
+.budget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+  .budget-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}
+
+.budget-header h2 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #102a43;
+  margin: 0 0 0.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.budget-header p {
+  color: #475569;
+  font-weight: 500;
+  margin: 0;
+}
+
+.gold-icon {
+  color: #f59e0b;
+}
+
+.currency-selector {
+  min-width: 160px;
+}
+
+/* Live Exchange Rates Card */
+.rates-card {
+  background: rgba(255, 255, 255, 0.45) !important;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(16, 42, 67, 0.1) !important;
+  border-radius: 20px !important;
+  padding: 1.5rem !important;
+  margin-bottom: 2.5rem;
+}
+
+.rates-card h3 {
+  font-size: 1.1rem;
+  font-weight: 750;
+  color: #102a43;
+  margin: 0 0 1rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.rates-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.rate-chip {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(16, 42, 67, 0.08);
+  padding: 0.6rem 1.2rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.3s ease;
+}
+
+.rate-chip:hover {
+  transform: translateY(-2px);
+  border-color: rgba(6, 182, 212, 0.3);
+  box-shadow: 0 8px 16px rgba(16, 42, 67, 0.04);
+}
+
+.rate-chip span {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #5b5fef;
+}
+
+.rate-chip strong {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #102a43;
+}
+
+/* Form and Grid */
+.budget-form-card {
+  background: rgba(255, 255, 255, 0.5) !important;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(16, 42, 67, 0.1) !important;
+  padding: 2rem !important;
+  border-radius: 20px !important;
+  margin-bottom: 2.5rem;
+}
+
+.budget-form-card h3 {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #102a43;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.budget-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.budget-card {
+  background: rgba(255, 255, 255, 0.5) !important;
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(16, 42, 67, 0.08) !important;
+  border-radius: 20px !important;
+  padding: 1.75rem !important;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.budget-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(245, 158, 11, 0.35);
+  box-shadow: 0 16px 36px rgba(16, 42, 67, 0.08) !important;
+}
+
+.budget-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.budget-card-header h3 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.25rem;
+  font-weight: 750;
+  color: #102a43;
+}
+
+.budget-meta {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.budget-amount {
+  font-size: 1.35rem;
+  font-weight: 850;
+  color: #5b5fef;
+}
+
+/* Neon progress bars overrides */
+.premium-progress-bar {
+  height: 8px !important;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.premium-progress-bar ::ng-deep .mdc-linear-progress__bar-inner {
+  stroke: linear-gradient(90deg, #5b5fef 0%, #06b6d4 100%) !important;
+  background-color: #06b6d4 !important;
+}
+
+.budget-status-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 1.25rem;
+}
+
+.collaborators {
+  border-top: 1px dashed rgba(16, 42, 67, 0.10);
+  padding-top: 1rem;
+  font-size: 0.85rem;
+  color: #475569;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.collaborators strong {
+  color: #102a43;
+}
+
+.collaborators-avatars {
+  display: flex;
+  margin-left: 0.5rem;
+}
+
+.collab-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #06b6d4;
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1.5px solid #ffffff;
+  margin-left: -6px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.collab-avatar:first-child {
+  margin-left: 0;
+}
+
+/* Button overrides */
+.premium-action-btn {
+  background: linear-gradient(135deg, #5b5fef 0%, #06b6d4 100%);
+  color: #ffffff !important;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 1.2rem 2.2rem !important;
+  border-radius: 14px !important;
+  box-shadow: 0 10px 24px rgba(91, 95, 239, 0.2) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.premium-action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(91, 95, 239, 0.3) !important;
+}
+
+@media (max-width: 600px) {
+  .budgets-page {
+    padding: 1.25rem 1rem;
+  }
+
+  .rates-card,
+  .budget-form-card,
+  .budget-card {
+    padding: 1.5rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .premium-action-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 1.2rem 1.5rem !important;
+  }
+
+  .rate-chip {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .budget-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .budget-amount {
+    align-self: flex-end;
+  }
+}

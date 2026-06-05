@@ -1,0 +1,65 @@
+<div class="about-page">
+  <div class="radial-glow glow-primary"></div>
+  <div class="radial-glow glow-secondary"></div>
+
+  <header class="about-header">
+    <a routerLink="/home" class="back-home-btn">
+      <mat-icon>arrow_back</mat-icon> Back to CashFlow Home
+    </a>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="about-hero">
+    <div class="about-copy">
+      <span class="eyebrow"><mat-icon>group</mat-icon> About CashFlow</span>
+      <h1 class="about-title">Democratizing financial intelligence for high-growth teams.</h1>
+      <p class="about-subtitle">We believe that navigating your business roadmap shouldn't be gated by manual spreadsheets, delayed receipts, or siloed tools. CashFlow was founded to unite shared budgets, predictive runways, and conversational intelligence into one unified glassmorphic visual ledger.</p>
+      
+      <div class="about-actions">
+        <a mat-raised-button class="cta-btn-primary" routerLink="/register">Register Free Workspace</a>
+      </div>
+    </div>
+
+    <!-- Right Side 3D interactive ring -->
+    <div class="about-canvas-container">
+      <div #threeAboutContainer class="about-canvas-mesh"></div>
+    </div>
+  </section>
+
+  <!-- Core Values Section -->
+  <section class="values-section">
+    <div class="section-header">
+      <span class="section-label">Our Core Values</span>
+      <h2>Engineered on high standards of integrity.</h2>
+    </div>
+
+    <div class="values-grid">
+      <mat-card class="value-card" (mousemove)="onCardMove($event, $any($event.currentTarget))" (mouseleave)="onCardLeave($any($event.currentTarget))">
+        <mat-icon class="icon-indigo">bolt</mat-icon>
+        <h3>Real-time Synchronization</h3>
+        <p>Collaboration is critical. We build standard SockJS-STOMP message channels so ledger details sync across workspaces instantly without refresh delays.</p>
+      </mat-card>
+
+      <mat-card class="value-card" (mousemove)="onCardMove($event, $any($event.currentTarget))" (mouseleave)="onCardLeave($any($event.currentTarget))">
+        <mat-icon class="icon-emerald">psychology</mat-icon>
+        <h3>AI-first ledgers</h3>
+        <p>Leveraging true Gemini Vision and RestClient parsing configurations to convert physical invoices into audit-ready structured ledger rows in a single tap.</p>
+      </mat-card>
+
+      <mat-card class="value-card" (mousemove)="onCardMove($event, $any($event.currentTarget))" (mouseleave)="onCardLeave($any($event.currentTarget))">
+        <mat-icon class="icon-amber">shield</mat-icon>
+        <h3>Premium Privacy</h3>
+        <p>Aesthetics are matched with safety. Frosted glassmorphism design parameters are built around reliable, isolated Supabase schemas.</p>
+      </mat-card>
+    </div>
+  </section>
+
+  <!-- CTA Banner -->
+  <section class="about-cta" (mousemove)="onCardMove($event, $any($event.currentTarget))" (mouseleave)="onCardLeave($any($event.currentTarget))">
+    <div class="cta-content">
+      <h2>Build your company's roadmap today.</h2>
+      <p>Configure Plaid bank integrations, invite collaborative teams, and let Gemini construct your predictive cash runway dynamically.</p>
+    </div>
+    <a mat-raised-button class="premium-cta-btn" routerLink="/register">Get Started Free</a>
+  </section>
+</div>

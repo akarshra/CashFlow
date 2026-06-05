@@ -1,0 +1,150 @@
+<div class="profile-shell">
+  <!-- Dynamic Alert Banner -->
+  <div class="custom-profile-alert" *ngIf="showAlert">
+    <div class="alert-content">
+      <mat-icon>info</mat-icon>
+      <span>{{ alertMessage }}</span>
+    </div>
+  </div>
+
+  <div class="profile-container">
+    <!-- Left Column: User Card & Stats -->
+    <div class="profile-column">
+      <mat-card class="profile-glass-card user-identity-card">
+        <div class="card-reflection"></div>
+        <div class="identity-header">
+          <div class="identity-avatar bg-gradient">
+            {{ firstName[0] || 'U' }}{{ lastName[0] || '' }}
+          </div>
+          <h2>{{ firstName }} {{ lastName }}</h2>
+          <span class="user-role-badge" [class.admin]="role === 'admin'">
+            <mat-icon>{{ role === 'admin' ? 'admin_panel_settings' : 'verified_user' }}</mat-icon>
+            <span>{{ role | uppercase }}</span>
+          </span>
+          <span class="premium-level-badge" *ngIf="isPremium">
+            <mat-icon>stars</mat-icon>
+            <span>VIP Premium</span>
+          </span>
+        </div>
+        <mat-divider style="border-color: rgba(255, 255, 255, 0.08); margin: 1.5rem 0;"></mat-divider>
+        <div class="identity-details">
+          <div class="identity-field">
+            <mat-icon>email</mat-icon>
+            <span>{{ email }}</span>
+          </div>
+          <div class="identity-field">
+            <mat-icon>phone</mat-icon>
+            <span>{{ phone }}</span>
+          </div>
+        </div>
+      </mat-card>
+
+      <!-- Platform Statistics -->
+      <mat-card class="profile-glass-card stats-card">
+        <h3 class="card-title">
+          <mat-icon style="color: #06b6d4;">analytics</mat-icon> Platform Footprint
+        </h3>
+        <div class="stats-grid">
+          <div class="stat-stub">
+            <div class="stat-num text-cyan">{{ verifiedLedgerRows }}</div>
+            <div class="stat-label">Verified Rows</div>
+          </div>
+          <div class="stat-stub">
+            <div class="stat-num text-indigo">{{ activeBudgetsCount }}</div>
+            <div class="stat-label">Active Budgets</div>
+          </div>
+          <div class="stat-stub">
+            <div class="stat-num text-violet">{{ connectedWallets }}</div>
+            <div class="stat-label">Wallets Synced</div>
+          </div>
+          <div class="stat-stub">
+            <div class="stat-num text-emerald">{{ accountAgeDays }}d</div>
+            <div class="stat-label">Mainframe Age</div>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+
+    <!-- Right Column: Edit Forms -->
+    <div class="profile-column">
+      <!-- Edit Details Card -->
+      <mat-card class="profile-glass-card details-edit-card">
+        <h3 class="card-title">
+          <mat-icon style="color: #5b5fef;">edit</mat-icon> Modify Personal Identity
+        </h3>
+        <p class="card-subtitle">Manage corporate identifiers propagated to team worksheets and consolidated PDF statement files.</p>
+        
+        <div class="details-form">
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="glass-form-field">
+              <mat-label>First Name</mat-label>
+              <input matInput [(ngModel)]="firstName" />
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="glass-form-field">
+              <mat-label>Last Name</mat-label>
+              <input matInput [(ngModel)]="lastName" />
+            </mat-form-field>
+          </div>
+          
+          <mat-form-field appearance="outline" class="glass-form-field full-width">
+            <mat-label>Contact Email (Read-Only)</mat-label>
+            <input matInput [(ngModel)]="email" readonly />
+            <mat-icon matSuffix style="color: rgba(255,255,255,0.45);">lock</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="glass-form-field full-width">
+            <mat-label>Phone Number</mat-label>
+            <input matInput [(ngModel)]="phone" />
+          </mat-form-field>
+
+          <button mat-raised-button class="glow-submit-btn" (click)="saveDetails()">
+            <mat-icon>save</mat-icon> Save Identity Matrix
+          </button>
+        </div>
+      </mat-card>
+
+      <!-- Change Password Card -->
+      <mat-card class="profile-glass-card password-edit-card">
+        <h3 class="card-title">
+          <mat-icon style="color: #7c3aed;">security</mat-icon> Mainframe Security Upgrades
+        </h3>
+        <p class="card-subtitle">Rotate local authentication challenges. Newly verified passwords activate immediately.</p>
+        
+        <div class="details-form">
+          <mat-form-field appearance="outline" class="glass-form-field full-width">
+            <mat-label>Current Password Challenge</mat-label>
+            <input matInput type="password" [(ngModel)]="currentPassword" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="glass-form-field full-width">
+            <mat-label>New Password Option</mat-label>
+            <input matInput type="password" [(ngModel)]="newPassword" (input)="checkPasswordStrength()" />
+          </mat-form-field>
+
+          <!-- Password strength indicator -->
+          <div class="strength-track" *ngIf="newPassword.length > 0">
+            <div class="strength-fill" [style.width.%]="passwordStrength * 25" [ngClass]="{
+              'weak': passwordStrength <= 1,
+              'fair': passwordStrength == 2,
+              'good': passwordStrength == 3,
+              'strong': passwordStrength == 4
+            }"></div>
+            <div class="strength-text" *ngIf="passwordStrength == 1">Weak Security</div>
+            <div class="strength-text" *ngIf="passwordStrength == 2">Moderate Challenge</div>
+            <div class="strength-text" *ngIf="passwordStrength == 3">Advanced Cipher</div>
+            <div class="strength-text" *ngIf="passwordStrength == 4">SOC2 Grade Cryptography</div>
+          </div>
+
+          <mat-form-field appearance="outline" class="glass-form-field full-width" style="margin-top: 1rem;">
+            <mat-label>Confirm New Password Option</mat-label>
+            <input matInput type="password" [(ngModel)]="confirmPassword" />
+          </mat-form-field>
+
+          <button mat-raised-button class="glow-submit-btn password-btn" (click)="changePassword()">
+            <mat-icon>lock_reset</mat-icon> Rotate Authentication Password
+          </button>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>

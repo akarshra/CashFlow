@@ -1,0 +1,2 @@
+-- Baseline migration for existing schema
+-- No schema changes: using Flyway to manage future migrations

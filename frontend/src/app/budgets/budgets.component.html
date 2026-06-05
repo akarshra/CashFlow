@@ -1,0 +1,83 @@
+<div class="module-container budgets-page">
+  <!-- Page Header -->
+  <div class="budget-header">
+    <div>
+      <h2><mat-icon class="gold-icon">account_balance_wallet</mat-icon> Collaborative Budgets</h2>
+      <p>Plan shared budgets with team members and view active goal progress in multiple currencies.</p>
+    </div>
+    <div class="currency-selector">
+      <mat-form-field appearance="fill" class="premium-form-field">
+        <mat-label>Display currency</mat-label>
+        <mat-select [(ngModel)]="selectedCurrency">
+          <mat-option *ngFor="let currency of availableCurrencies" [value]="currency">{{ currency }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <!-- Live Exchange Rates -->
+  <mat-card class="premium-card rates-card">
+    <h3>Live Forex Exchange Rates</h3>
+    <div class="rates-grid">
+      <div class="rate-chip" *ngFor="let currency of availableCurrencies">
+        <span>{{ currency }}</span>
+        <strong>{{ rates[currency] ? rates[currency].toFixed(4) : '—' }}</strong>
+      </div>
+    </div>
+  </mat-card>
+
+  <!-- Create Budget -->
+  <mat-card class="premium-card budget-form-card">
+    <h3>Create a Collaborative Budget</h3>
+    <div class="form-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>Budget Name</mat-label>
+        <input matInput [(ngModel)]="newBudget.name" placeholder="e.g. Q3 Software spend" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Target Limit (INR)</mat-label>
+        <input matInput type="number" [(ngModel)]="newBudget.amount" placeholder="0.00" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Start Date</mat-label>
+        <input matInput type="date" [(ngModel)]="newBudget.startDate" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>End Date</mat-label>
+        <input matInput type="date" [(ngModel)]="newBudget.endDate" />
+      </mat-form-field>
+    </div>
+    <button mat-raised-button class="premium-action-btn" (click)="createBudget()">
+      <mat-icon>save</mat-icon> Establish Budget
+    </button>
+  </mat-card>
+
+  <!-- Budgets Grid -->
+  <div class="budget-grid">
+    <mat-card class="premium-card budget-card" *ngFor="let budget of budgets">
+      <div class="budget-card-header">
+        <div>
+          <h3>{{ budget.name }}</h3>
+          <p class="budget-meta">{{ budget.startDate }} — {{ budget.endDate }}</p>
+        </div>
+        <div class="budget-amount">{{ formatAmount(budget.amount) }}</div>
+      </div>
+
+      <mat-progress-bar mode="determinate" class="premium-progress-bar" [value]="progressPercentage(budget.startDate, budget.endDate)"></mat-progress-bar>
+      
+      <div class="budget-status-row">
+        <span>{{ dueLabel(budget.endDate) }}</span>
+        <span>{{ progressPercentage(budget.startDate, budget.endDate) }}% Spent</span>
+      </div>
+      
+      <div class="collaborators" *ngIf="budget.collaborators?.length">
+        <strong>Shared with:</strong>
+        <div class="collaborators-avatars">
+          <div class="collab-avatar" *ngFor="let coll of budget.collaborators">
+            {{ coll.substring(0,2).toUpperCase() }}
+          </div>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+</div>

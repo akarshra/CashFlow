@@ -1,0 +1,148 @@
+<div class="module-container invoices-page">
+  <!-- Page Header -->
+  <div class="invoice-header">
+    <div>
+      <h2><mat-icon class="gold-icon">receipt</mat-icon> Client Billing Center</h2>
+      <p>Issue corporate statements, track invoice statuses, and generate high-fidelity PDF ledgers.</p>
+    </div>
+  </div>
+
+  <!-- Forms & Real-Time Document Preview Grid -->
+  <div class="invoice-grid-split">
+    <!-- Form Card -->
+    <mat-card class="premium-card form-card">
+      <div class="card-title-row">
+        <h3><mat-icon style="color: #06b6d4;">add_box</mat-icon> Compile Statement</h3>
+        <span class="badge">Autonumber Ready</span>
+      </div>
+
+      <div class="fields-stack">
+        <mat-form-field appearance="outline" class="premium-field">
+          <mat-label>Client Company Name</mat-label>
+          <input matInput [(ngModel)]="invoiceForm.clientName" placeholder="e.g. Acme Corp Inc" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="premium-field">
+          <mat-label>Client Contact Email</mat-label>
+          <input matInput type="email" [(ngModel)]="invoiceForm.clientEmail" placeholder="e.g. billing@acme.com" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="premium-field">
+          <mat-label>Invoice Amount (INR)</mat-label>
+          <input matInput type="number" [(ngModel)]="invoiceForm.amount" placeholder="0.00" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="premium-field">
+          <mat-label>Payment Due Date</mat-label>
+          <input matInput type="date" [(ngModel)]="invoiceForm.dueDate" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="premium-field">
+          <mat-label>Delivered Services Description</mat-label>
+          <textarea matInput rows="3" [(ngModel)]="invoiceForm.description" placeholder="Specify deliverables..."></textarea>
+        </mat-form-field>
+      </div>
+
+      <button mat-raised-button class="premium-action-btn" (click)="submitInvoice()">
+        <mat-icon>cloud_download</mat-icon> Commit & Download PDF
+      </button>
+    </mat-card>
+
+    <!-- Simulated Document Live Preview Card -->
+    <mat-card class="premium-card document-preview-card">
+      <div class="card-title-row">
+        <h3><mat-icon style="color: #5b5fef;">visibility</mat-icon> Live Statement Mock-Up</h3>
+        <span class="preview-badge">PDF Real-time Draft</span>
+      </div>
+
+      <div class="simulated-pdf">
+        <div class="pdf-header">
+          <div class="brand">
+            <h1>CASHFLOW</h1>
+            <span>PREMIUM BILLING STATEMENT</span>
+          </div>
+          <div class="pdf-meta-box">
+            <span>REF: #DRAFT</span>
+            <span>DUE: {{ invoiceForm.dueDate }}</span>
+          </div>
+        </div>
+
+        <div class="pdf-recipient">
+          <strong>RECIPIENT LEDGER:</strong>
+          <span class="client-name">{{ invoiceForm.clientName || '[Client Company Name]' }}</span>
+          <span class="client-email">{{ invoiceForm.clientEmail || '[client@company.com]' }}</span>
+        </div>
+
+        <div class="pdf-table">
+          <div class="th">
+            <span>DELIVERABLES DESCRIPTION</span>
+            <span class="price">PRICE</span>
+          </div>
+          <div class="td">
+            <span class="desc-text">{{ invoiceForm.description || '[Specify delivered services description]' }}</span>
+            <span class="price-val">₹{{ (invoiceForm.amount || 0).toLocaleString('en-IN', {minimumFractionDigits: 2}) }}</span>
+          </div>
+        </div>
+
+        <div class="pdf-footer">
+          <span>Authorized Statement from CashFlow ledgers. Securing collaborative capital.</span>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
+  <!-- Invoices Lists with Filter Tabs -->
+  <div class="invoice-roster-section">
+    <div class="roster-header">
+      <h3>Recent Billing Statements</h3>
+      
+      <!-- Interactive Filter Tabs -->
+      <div class="filter-tabs">
+        <button class="tab-btn" [class.active]="activeFilter === 'ALL'" (click)="setFilter('ALL')">All</button>
+        <button class="tab-btn" [class.active]="activeFilter === 'PAID'" (click)="setFilter('PAID')">Paid</button>
+        <button class="tab-btn" [class.active]="activeFilter === 'PENDING'" (click)="setFilter('PENDING')">Pending</button>
+        <button class="tab-btn" [class.active]="activeFilter === 'OVERDUE'" (click)="setFilter('OVERDUE')">Overdue</button>
+      </div>
+    </div>
+
+    <div class="invoices-list">
+      <div *ngIf="!filteredInvoices.length" class="empty-invoices-state">
+        <mat-icon>receipt</mat-icon>
+        <p>No invoices match the selected filter category.</p>
+      </div>
+
+      <div class="invoice-row glass-row" *ngFor="let item of filteredInvoices">
+        <div class="col-client">
+          <div class="client-avatar">
+            {{ item.clientName.substring(0, 2).toUpperCase() }}
+          </div>
+          <div class="client-details">
+            <h4>{{ item.clientName }}</h4>
+            <span>{{ item.clientEmail }}</span>
+          </div>
+        </div>
+
+        <div class="col-description">
+          <p>{{ item.description }}</p>
+          <span class="due-label">Due {{ item.dueDate }}</span>
+        </div>
+
+        <div class="col-cost">
+          <strong class="price">{{ item.amount | currency:'INR':'symbol':'1.2-2' }}</strong>
+          <span class="status-badge-pill" 
+                [class.paid]="(item.status || 'Pending').toLowerCase() === 'paid'"
+                [class.pending]="(item.status || 'Pending').toLowerCase() === 'pending'"
+                [class.overdue]="(item.status || 'Pending').toLowerCase() === 'overdue'">
+            {{ item.status || 'Pending' }}
+          </span>
+        </div>
+
+        <div class="col-actions">
+          <button mat-stroked-button class="premium-download-btn" (click)="downloadExistingInvoice(item)">
+            <mat-icon>cloud_download</mat-icon> PDF
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,152 @@
+<div class="module-container investments-page">
+  <!-- Page Header -->
+  <div class="invest-header">
+    <div>
+      <h2><mat-icon class="gold-icon">show_chart</mat-icon> Investment Portfolio Simulator</h2>
+      <p>Analyze liquid reserves, track real-time stocks, and configure crypto asset allocations.</p>
+    </div>
+
+    <div class="header-actions">
+      <div class="currency-selector">
+        <mat-form-field appearance="fill" class="premium-form-field">
+          <mat-label>Display currency</mat-label>
+          <mat-select [(ngModel)]="selectedCurrency">
+            <mat-option *ngFor="let currency of availableCurrencies" [value]="currency">{{ currency }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+
+  <!-- Highlights & Stack Bar Row -->
+  <div class="investment-grid">
+    <!-- Value Summary -->
+    <mat-card class="premium-card summary-card">
+      <div class="decor-orb"></div>
+      <span class="label">AGGREGATED PORTFOLIO VALUE</span>
+      <h3 class="value">{{ formatCurrency(totalPortfolioValue, 'INR') }}</h3>
+      <p class="subtitle">Live market valuations dynamically synced across connected exchange feeds.</p>
+    </mat-card>
+
+    <!-- Stack Allocation Visualizer -->
+    <mat-card class="premium-card allocation-card">
+      <h3>Portfolio Allocation</h3>
+      <p class="subtitle">Visualizing total distribution of assets by valuation holdings.</p>
+      
+      <div class="allocation-stack">
+        <div class="stack-segment" *ngFor="let item of holdings"
+             [style.width.%]="getPortfolioPercent(item)"
+             [style.background]="item.assetType === 'CRYPTO' ? 'linear-gradient(135deg, #06b6d4 0%, #5b5fef 100%)' : 'linear-gradient(135deg, #5b5fef 0%, #f59e0b 100%)'"
+             [title]="item.symbol + ' (' + getPortfolioPercent(item) + '%)'">
+        </div>
+      </div>
+
+      <div class="allocation-legend">
+        <div class="legend-chip" *ngFor="let item of holdings">
+          <span class="color-dot" [style.background]="item.assetType === 'CRYPTO' ? '#06b6d4' : '#5b5fef'"></span>
+          <span>{{ item.symbol }}</span>
+          <strong>{{ getPortfolioPercent(item) }}%</strong>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
+  <!-- Main Grid with Form and Roster -->
+  <div class="invest-content-grid">
+    <!-- Roster of Assets -->
+    <mat-card class="premium-card holdings-card">
+      <div class="card-title-row">
+        <h3><mat-icon style="color: #5b5fef;">inventory_2</mat-icon> Connected Assets</h3>
+        <span class="status-badge">Live Ticker Connection</span>
+      </div>
+
+      <div class="holdings-list">
+        <div *ngIf="!holdings.length" class="empty-assets-state">
+          <mat-icon>folder_open</mat-icon>
+          <p>No holdings added yet. Connect stocks or crypto portfolios to synchronize.</p>
+        </div>
+
+        <div class="holding-row glass-row" *ngFor="let item of holdings">
+          <div class="col-brand">
+            <div class="symbol-circle" [style.border-color]="item.assetType === 'CRYPTO' ? '#06b6d4' : '#5b5fef'">
+              {{ item.symbol.substring(0, 3) }}
+            </div>
+            <div class="symbol-details">
+              <h4>{{ item.symbol }}</h4>
+              <span class="asset-badge" [class.crypto]="item.assetType === 'CRYPTO'">{{ item.assetType }}</span>
+            </div>
+          </div>
+
+          <div class="col-market">
+            <div class="sparkline-wrapper">
+              <svg class="sparkline-svg" viewBox="0 0 120 50">
+                <path class="sparkline-path"
+                  [attr.d]="getSparklinePoints(item.symbol)"
+                  fill="none"
+                  [attr.stroke]="isPositive(item) ? '#10b981' : '#ef4444'"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <div class="col-values">
+            <div class="quantity-meta">
+              <strong>{{ item.quantity }}</strong>
+              <span>Shares / Units</span>
+            </div>
+            <div class="avg-meta">
+              <strong>{{ formatCurrency(item.avgPrice || 0, item.currency || 'INR') }}</strong>
+              <span>Avg Entry</span>
+            </div>
+          </div>
+
+          <div class="col-totals">
+            <strong class="total-value">{{ formatCurrency(item.valueUsd || 0, 'INR') }}</strong>
+            <span class="gain-badge" [class.positive]="isPositive(item)" [class.negative]="!isPositive(item)">
+              {{ priceChange(item) }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+
+    <!-- Buy form -->
+    <mat-card class="premium-card form-card">
+      <div class="card-title-row">
+        <h3><mat-icon style="color: #06b6d4;">add_shopping_cart</mat-icon> Register Buy Ledger</h3>
+        <span class="badge">SEC Registered</span>
+      </div>
+
+      <form [formGroup]="holdingForm" (ngSubmit)="createHolding()" class="fields-stack">
+        <mat-form-field appearance="outline" class="premium-field">
+          <mat-label>Asset Symbol</mat-label>
+          <input matInput formControlName="symbol" placeholder="e.g. AAPL, BTC, TSLA" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="premium-field">
+          <mat-label>Asset Class</mat-label>
+          <mat-select formControlName="assetType">
+            <mat-option value="STOCK">Stock Class</mat-option>
+            <mat-option value="CRYPTO">Crypto Token</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="premium-field">
+          <mat-label>Quantity Purchased</mat-label>
+          <input matInput type="number" formControlName="quantity" placeholder="0.00" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="premium-field">
+          <mat-label>Purchase Avg Price (INR)</mat-label>
+          <input matInput type="number" formControlName="avgPrice" placeholder="0.00" />
+        </mat-form-field>
+
+        <button mat-raised-button class="premium-action-btn" type="submit" [disabled]="holdingForm.invalid">
+          <mat-icon>bolt</mat-icon> Commit Buy Order
+        </button>
+      </form>
+    </mat-card>
+  </div>
+</div>

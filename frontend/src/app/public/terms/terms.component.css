@@ -1,0 +1,244 @@
+.document-page {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #eff6ff 100%);
+  color: #0f172a;
+  min-height: 100vh;
+  padding: 4rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  font-family: 'Outfit', 'Inter', sans-serif;
+  overflow: hidden;
+  position: relative;
+}
+
+.radial-glow {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  filter: blur(140px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.glow-primary {
+  top: -10%;
+  right: -5%;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, rgba(99, 102, 241, 0) 70%);
+}
+
+.glow-secondary {
+  bottom: 10%;
+  left: -10%;
+  background: radial-gradient(circle, rgba(13, 148, 136, 0.06) 0%, rgba(13, 148, 136, 0) 70%);
+}
+
+.document-header-bar,
+.document-header,
+.document-container {
+  position: relative;
+  z-index: 1;
+  max-width: 1240px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.back-home-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #0d9488;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.25s ease;
+}
+
+.back-home-btn:hover {
+  transform: translateX(-4px);
+  color: #0f766e;
+}
+
+/* Header Section */
+.document-header {
+  text-align: left;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 0.85rem;
+  color: #0d9488;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+}
+
+.eyebrow mat-icon {
+  font-size: 1.1rem;
+  width: 18px;
+  height: 18px;
+}
+
+.document-title {
+  font-size: clamp(2.35rem, 4vw, 3.25rem);
+  font-weight: 900;
+  line-height: 1.15;
+  margin: 0 0 1.25rem;
+  background: linear-gradient(135deg, #0f172a 40%, #1e40af 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.01em;
+}
+
+.document-subtitle {
+  font-size: 1.1rem;
+  line-height: 1.65;
+  color: #475569;
+  max-width: 820px;
+}
+
+/* Document Grid Layout */
+.document-container {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.7fr) 2.3fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+/* Sidebar */
+.document-sidebar {
+  padding: 2rem;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.03);
+  position: sticky;
+  top: 100px;
+}
+
+.document-sidebar h3 {
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #94a3b8;
+  margin: 0 0 1.5rem;
+}
+
+.outline-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.outline-links li button {
+  background: none;
+  border: none;
+  color: #475569;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  padding: 0.25rem 0;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.outline-links li button:hover {
+  color: #0d9488;
+  transform: translateX(4px);
+}
+
+/* Content Pane */
+.document-content-pane {
+  padding: 3.5rem;
+  border-radius: 32px;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.03);
+  
+  position: relative;
+  overflow: hidden;
+  --mouse-x: 0px;
+  --mouse-y: 0px;
+  background: linear-gradient(rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.75)) padding-box,
+              radial-gradient(circle 240px at var(--mouse-x) var(--mouse-y), rgba(13, 148, 136, 0.35) 0%, rgba(99, 102, 241, 0.1) 60%, rgba(255, 255, 255, 0.5) 100%) border-box !important;
+  border: 1.5px solid transparent !important;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.document-content-pane::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle 280px at var(--mouse-x) var(--mouse-y), rgba(13, 148, 136, 0.08) 0%, rgba(99, 102, 241, 0.01) 60%, rgba(255, 255, 255, 0) 100%);
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.document-content-pane:hover::before {
+  opacity: 1;
+}
+
+.document-content-pane > * {
+  position: relative;
+  z-index: 1;
+}
+
+.doc-section {
+  scroll-margin-top: 120px;
+}
+
+.doc-section h2 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 1.25rem;
+}
+
+.doc-section p {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: #475569;
+  margin: 0 0 1.5rem;
+}
+
+.doc-section ul {
+  padding-left: 1.5rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.doc-section ul li {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #475569;
+}
+
+.separator {
+  border: 0;
+  height: 1px;
+  background: rgba(15, 23, 42, 0.06);
+  margin: 3rem 0;
+}
+
+@media (max-width: 780px) {
+  .document-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .document-sidebar {
+    position: static;
+  }
+  
+  .document-content-pane {
+    padding: 2rem;
+  }
+}

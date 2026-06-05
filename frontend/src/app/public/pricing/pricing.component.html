@@ -1,0 +1,72 @@
+<div class="pricing-page">
+  <div class="radial-glow glow-primary"></div>
+  <div class="radial-glow glow-secondary"></div>
+
+  <header class="pricing-header-bar">
+    <a routerLink="/home" class="back-home-btn">
+      <mat-icon>arrow_back</mat-icon> Back to CashFlow Home
+    </a>
+  </header>
+
+  <section class="pricing-header">
+    <span class="eyebrow"><mat-icon>credit_card</mat-icon> Subscription Plans</span>
+    <h1 class="pricing-title">Flexible pricing built for collaborative teams.</h1>
+    <p class="pricing-subtitle">Select the plan that fits your stage. Experiment with core models for free, or lock in advanced integrations with professional tools.</p>
+  </section>
+
+  <!-- Premium Toggle Switch -->
+  <div class="pricing-toggle-row">
+    <span [class.active-mode]="!isYearly">Monthly Billing</span>
+    <button class="toggle-switch-btn" (click)="toggleBillingInterval()" aria-label="Toggle billing interval">
+      <div class="toggle-slider" [class.toggle-yearly]="isYearly"></div>
+    </button>
+    <span [class.active-mode]="isYearly">Yearly Billing <strong class="badge-saving">Save 20%</strong></span>
+  </div>
+
+  <!-- Subscription Grid -->
+  <div class="pricing-grid">
+    <mat-card *ngFor="let plan of plans; let i = index" 
+              class="pricing-card" 
+              [class.professional-active]="plan.popular"
+              (mousemove)="onCardMove($event, $any($event.currentTarget))" 
+              (mouseleave)="onCardLeave($any($event.currentTarget))">
+      
+      <!-- Most popular tag -->
+      <span *ngIf="plan.popular" class="popular-tag">Most Popular</span>
+
+      <div class="card-head">
+        <mat-icon [class.icon-glow-indigo]="i === 0" [class.icon-glow-emerald]="i === 1" [class.icon-glow-purple]="i === 2">{{ plan.icon }}</mat-icon>
+        <h3>{{ plan.name }}</h3>
+        <p>{{ plan.desc }}</p>
+      </div>
+
+      <div class="price-block">
+        <div class="price-row">
+          <span class="currency-symbol">₹</span>
+          <span class="price-amount">{{ isYearly ? plan.yearlyPrice : plan.monthlyPrice }}</span>
+          <span class="price-period">/mo</span>
+        </div>
+        <span class="billing-detail">{{ isYearly ? 'Billed annually' : 'Billed monthly' }}</span>
+      </div>
+
+      <button mat-raised-button 
+              [class.premium-action-btn]="plan.popular" 
+              [class.secondary-action-btn]="!plan.popular" 
+              (click)="buyPlan(plan.name)">
+        <span *ngIf="plan.name === 'Starter'">{{ isLoggedIn() ? 'Go to Dashboard' : plan.btnText }}</span>
+        <span *ngIf="plan.name === 'Professional'">{{ isPremium() ? 'Active Subscription' : plan.btnText }}</span>
+        <span *ngIf="plan.name === 'Enterprise'">{{ plan.btnText }}</span>
+      </button>
+
+      <div class="features-list-wrapper">
+        <hr class="separator">
+        <ul class="features-ul">
+          <li *ngFor="let feature of plan.features">
+            <mat-icon class="check-icon">check</mat-icon>
+            <span>{{ feature }}</span>
+          </li>
+        </ul>
+      </div>
+    </mat-card>
+  </div>
+</div>

@@ -1,0 +1,849 @@
+<div class="admin-shell">
+  <!-- Interactive Administrative Alert Banner -->
+  <div class="custom-alert-banner" [class.show]="showAlert">
+    <div class="alert-content">
+      <mat-icon class="alert-icon">info</mat-icon>
+      <span class="alert-text">{{ alertMessage }}</span>
+    </div>
+  </div>
+
+  <!-- Mainframe Glass Header -->
+  <header class="admin-header-glass">
+    <div class="header-text-container">
+      <div class="root-badge">
+        <mat-icon class="badge-icon">security</mat-icon>
+        <span>ROOT MAINMAIN SYSTEM</span>
+      </div>
+      <h1>Admin Control Panel</h1>
+      <p class="header-subtitle">Secure mainframe database analytics, user metrics auditing, and real-time system synchronization controls.</p>
+    </div>
+    <!-- Container for 3D Holographic Gear Core -->
+    <div class="header-three-container">
+      <div #canvasContainer class="holo-core-canvas"></div>
+      <div class="canvas-reflection"></div>
+    </div>
+  </header>
+
+  <!-- KPI Widgets Grid -->
+  <section class="kpi-grid">
+    <div class="kpi-card violet-glow">
+      <div class="kpi-icon-wrapper">
+        <mat-icon>group</mat-icon>
+      </div>
+      <div class="kpi-details">
+        <div class="kpi-title">Active System Users</div>
+        <div class="kpi-value">{{ totalUsers }}</div>
+        <div class="kpi-subtitle">Seeded local rows</div>
+      </div>
+      <div class="kpi-bg-glow"></div>
+    </div>
+
+    <div class="kpi-card teal-glow">
+      <div class="kpi-icon-wrapper">
+        <mat-icon>history_edu</mat-icon>
+      </div>
+      <div class="kpi-details">
+        <div class="kpi-title">Logins Audited</div>
+        <div class="kpi-value">{{ totalLogins }}</div>
+        <div class="kpi-subtitle">CORS OPTIONS filtered</div>
+      </div>
+      <div class="kpi-bg-glow"></div>
+    </div>
+
+    <div class="kpi-card emerald-glow">
+      <div class="kpi-icon-wrapper">
+        <mat-icon>hub</mat-icon>
+      </div>
+      <div class="kpi-details">
+        <div class="kpi-title">Data Ledger Nodes</div>
+        <div class="kpi-value">{{ totalDataNodes }}</div>
+        <div class="kpi-subtitle">Sum of stubs tracked</div>
+      </div>
+      <div class="kpi-bg-glow"></div>
+    </div>
+
+    <div class="kpi-card amber-glow">
+      <div class="kpi-icon-wrapper">
+        <mat-icon>workspace_premium</mat-icon>
+      </div>
+      <div class="kpi-details">
+        <div class="kpi-title">Premium Ratio</div>
+        <div class="kpi-value">{{ premiumRate }}%</div>
+        <div class="kpi-subtitle">Active VIP tier users</div>
+      </div>
+      <div class="kpi-bg-glow"></div>
+    </div>
+  </section>
+
+  <!-- Interactive Controls Navigation Tabs -->
+  <nav class="admin-tab-nav">
+    <button class="nav-tab-btn" [class.active]="activeTab === 'overview'" (click)="switchTab('overview')">
+      <mat-icon>analytics</mat-icon>
+      <span>Overview</span>
+    </button>
+    <button class="nav-tab-btn" [class.active]="activeTab === 'users'" (click)="switchTab('users')">
+      <mat-icon>people_outline</mat-icon>
+      <span>User Accounts</span>
+    </button>
+    <button class="nav-tab-btn" [class.active]="activeTab === 'logs'" (click)="switchTab('logs')">
+      <mat-icon>receipt_long</mat-icon>
+      <span>Security Logs</span>
+    </button>
+    <button class="nav-tab-btn" [class.active]="activeTab === 'controls'" (click)="switchTab('controls')">
+      <mat-icon>tune</mat-icon>
+      <span>System Controls</span>
+    </button>
+    <button class="nav-tab-btn" [class.active]="activeTab === 'workspaces'" (click)="switchTab('workspaces')">
+      <mat-icon>cloud_queue</mat-icon>
+      <span>Workspaces</span>
+    </button>
+    <button class="nav-tab-btn" [class.active]="activeTab === 'email'" (click)="switchTab('email')">
+      <mat-icon>email</mat-icon>
+      <span>Email & Invites</span>
+    </button>
+  </nav>
+
+  <!-- Tab Content: Overview -->
+  <div class="tab-pane" *ngIf="activeTab === 'overview'">
+    <!-- Interactive Glowing SVG Weekly Analytics Chart -->
+    <div class="overview-card pane-analytics" style="margin-bottom: 1.8rem;">
+      <h3 class="pane-title">
+        <mat-icon>insights</mat-icon>
+        <span>Weekly Ledger Synced Volumes</span>
+      </h3>
+      <div class="chart-wrapper">
+        <svg viewBox="0 0 800 200" class="neon-svg-chart">
+          <defs>
+            <linearGradient id="chart-glow" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#0d9488" stop-opacity="0.45"/>
+              <stop offset="100%" stop-color="#0d9488" stop-opacity="0.0"/>
+            </linearGradient>
+          </defs>
+          <!-- Grid lines -->
+          <line x1="50" y1="30" x2="750" y2="30" stroke="rgba(15, 23, 42, 0.04)" stroke-width="1" />
+          <line x1="50" y1="80" x2="750" y2="80" stroke="rgba(15, 23, 42, 0.04)" stroke-width="1" />
+          <line x1="50" y1="130" x2="750" y2="130" stroke="rgba(15, 23, 42, 0.04)" stroke-width="1" />
+          <line x1="50" y1="170" x2="750" y2="170" stroke="rgba(15, 23, 42, 0.08)" stroke-dasharray="4" />
+          
+          <!-- Area under line -->
+          <path d="M 50 170 Q 150 70, 250 110 T 450 40 T 650 90 T 750 60 L 750 170 Z" fill="url(#chart-glow)" />
+          
+          <!-- Stroke line -->
+          <path d="M 50 170 Q 150 70, 250 110 T 450 40 T 650 90 T 750 60" fill="none" stroke="#0d9488" stroke-width="3.5" stroke-linecap="round" />
+          
+          <!-- Interactive Nodes -->
+          <circle cx="150" cy="98" r="5" fill="#ffffff" stroke="#0d9488" stroke-width="3" class="chart-node" />
+          <circle cx="350" cy="75" r="5" fill="#ffffff" stroke="#0d9488" stroke-width="3" class="chart-node" />
+          <circle cx="550" cy="65" r="5" fill="#ffffff" stroke="#0d9488" stroke-width="3" class="chart-node" />
+          
+          <!-- Labels -->
+          <text x="42" y="194" class="chart-label">MON</text>
+          <text x="158" y="194" class="chart-label">TUE</text>
+          <text x="274" y="194" class="chart-label">WED</text>
+          <text x="390" y="194" class="chart-label">THU</text>
+          <text x="506" y="194" class="chart-label">FRI</text>
+          <text x="622" y="194" class="chart-label">SAT</text>
+          <text x="738" y="194" class="chart-label">SUN</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="overview-grid">
+      <!-- Session Timeline -->
+      <div class="overview-card pane-timeline">
+        <h3 class="pane-title">
+          <mat-icon>history</mat-icon>
+          <span>Recent Sessions Activity</span>
+        </h3>
+        <div class="timeline-container">
+          <div class="timeline-node" *ngFor="let entry of recentLogins">
+            <div class="node-marker">
+              <mat-icon class="marker-icon">person</mat-icon>
+            </div>
+            <div class="node-content">
+              <div class="node-header">
+                <span class="node-email">{{ entry.email }}</span>
+                <span class="status-badge" [class.badge-admin]="entry.role === 'admin'">
+                  {{ entry.role | uppercase }}
+                </span>
+              </div>
+              <div class="node-time">
+                <mat-icon class="clock-icon">schedule</mat-icon>
+                <span>{{ entry.time | date:'mediumTime' }} — {{ entry.time | date:'mediumDate' }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mainframe Statistics & Health -->
+      <div class="overview-card pane-stats">
+        <h3 class="pane-title">
+          <mat-icon>dns</mat-icon>
+          <span>Mainframe Health & Parameters</span>
+        </h3>
+        <div class="health-stubs">
+          <div class="health-stub">
+            <span class="stub-label">Database Engine</span>
+            <span class="stub-value highlight-emerald">ONLINE (H2 mem)</span>
+          </div>
+
+          <div class="health-stub">
+            <div class="stub-progress-header">
+              <span class="stub-label">Memory Usage</span>
+              <span class="stub-value">{{ h2MemoryUsage }} / 512 MB</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-bar emerald-bar" style="width: 4.8%;"></div>
+            </div>
+          </div>
+
+          <div class="health-stub">
+            <div class="stub-progress-header">
+              <span class="stub-label">Host CPU Load</span>
+              <span class="stub-value">{{ systemCpuLoad }}</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-bar violet-bar" style="width: 3.8%;"></div>
+            </div>
+          </div>
+
+          <div class="health-stub">
+            <span class="stub-label">Gateway API Latency</span>
+            <span class="stub-value highlight-teal">{{ apiLatency }}</span>
+          </div>
+
+          <div class="health-stub">
+            <span class="stub-label">Active WebSocket Sockets</span>
+            <span class="stub-value">{{ activeSockets }} connections</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SOC2 compliance audits & SSO Breakdowns -->
+    <div class="overview-grid" style="margin-top: 1.8rem;">
+      <div class="overview-card pane-compliance violet-glow">
+        <h3 class="pane-title">
+          <mat-icon>security</mat-icon>
+          <span>SOC2 Compliance Audit Activity</span>
+        </h3>
+        <div class="chart-container" style="position: relative; height: 260px; width: 100%;">
+          <canvas #complianceChart></canvas>
+        </div>
+      </div>
+
+      <div class="overview-card pane-sso teal-glow">
+        <h3 class="pane-title">
+          <mat-icon>vpn_key</mat-icon>
+          <span>SSO OAuth Login Breakdown</span>
+        </h3>
+        <div class="chart-container" style="position: relative; height: 260px; width: 100%;">
+          <canvas #ssoChart></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Predictive Churn & Forecast Analytics -->
+    <div class="overview-card pane-predictive emerald-glow" style="margin-top: 1.8rem;" *ngIf="metricsSummary?.churnAnalytics">
+      <h3 class="pane-title">
+        <mat-icon>query_stats</mat-icon>
+        <span>AI Predictive MRR Trajectory & Churn Forecast</span>
+      </h3>
+      <div class="predictive-metrics-row">
+        <div class="predictive-kpi">
+          <div class="kpi-label">Projected Next Month MRR</div>
+          <div class="kpi-val">${{ metricsSummary.churnAnalytics.mrrTrajectory[metricsSummary.churnAnalytics.mrrTrajectory.length - 1] | number }}</div>
+          <div class="kpi-desc">Based on AI expansion vectors</div>
+        </div>
+        <div class="predictive-kpi">
+          <div class="kpi-label">Customer Satisfaction Index</div>
+          <div class="kpi-val">{{ metricsSummary.churnAnalytics.customerSatisfactionScore }}%</div>
+          <div class="kpi-desc">Consolidated satisfaction KPI</div>
+        </div>
+      </div>
+      <div class="risk-table-wrapper" style="margin-top: 1.5rem;">
+        <table class="risk-table">
+          <thead>
+            <tr>
+              <th>Customer Entity</th>
+              <th>Market Segment</th>
+              <th>Monthly Recurring Impact</th>
+              <th>AI-Computed Churn Risk</th>
+              <th>Health Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of metricsSummary.churnAnalytics.riskTable">
+              <td>{{ row.customer }}</td>
+              <td>{{ row.segment }}</td>
+              <td>${{ row.mrrImpact | number }}</td>
+              <td>{{ row.churnRisk }}</td>
+              <td>
+                <span class="status-pill" [class.success-pill]="row.healthStatus === 'Healthy'" [class.warning-pill]="row.healthStatus === 'Warning'" [class.danger-pill]="row.healthStatus === 'Critical'">
+                  {{ row.healthStatus }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Live API Request Traffic Streamer Console -->
+    <div class="overview-card pane-live-traffic violet-glow" style="margin-top: 1.8rem;">
+      <h3 class="pane-title">
+        <mat-icon class="spinning">sync</mat-icon>
+        <span>Live API Request Traffic Streamer</span>
+      </h3>
+      <p class="pane-subtitle" style="color: #64748b; font-size: 0.88rem; margin-top: -0.5rem; margin-bottom: 1.2rem;">
+        Real-time telemetry of HTTP requests routed through the mainframe gateway filters.
+      </p>
+      <div class="table-card-wrapper" style="max-height: 300px; overflow-y: auto;">
+        <table class="admin-audit-table">
+          <thead>
+            <tr>
+              <th>Method</th>
+              <th>Request URI</th>
+              <th>Client IP</th>
+              <th>Status</th>
+              <th>Duration</th>
+              <th>Timestamp</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let log of liveTrafficLogs">
+              <td>
+                <span class="status-badge" [class.badge-admin]="log.method === 'POST' || log.method === 'PUT' || log.method === 'DELETE'" style="font-weight: bold; padding: 4px 8px; border-radius: 8px;">
+                  {{ log.method }}
+                </span>
+              </td>
+              <td style="font-family: monospace; font-size: 0.85rem; color: #0f172a;">{{ log.uri }}</td>
+              <td style="color: #475569;">{{ log.ip }}</td>
+              <td>
+                <span class="status-pill" [class.success-pill]="log.status >= 200 && log.status < 300" [class.danger-pill]="log.status >= 400" [class.warning-pill]="log.status >= 300 && log.status < 400">
+                  {{ log.status }}
+                </span>
+              </td>
+              <td style="font-weight: 600; color: #0d9488;">{{ log.duration }}ms</td>
+              <td class="timestamp-cell">{{ log.timestamp | date:'mediumTime' }}</td>
+            </tr>
+            <tr *ngIf="liveTrafficLogs.length === 0">
+              <td colspan="6" style="text-align: center; color: #64748b; padding: 2rem;">
+                <mat-icon style="font-size: 2rem; width: auto; height: auto; margin-bottom: 0.5rem;">sensors</mat-icon>
+                <p>Waiting for live system traffic stream...</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab Content: User Accounts -->
+  <div class="tab-pane" *ngIf="activeTab === 'users'">
+    <div class="tab-pane-header">
+      <div class="search-box-wrapper">
+        <mat-icon class="search-icon">search</mat-icon>
+        <input type="text" [(ngModel)]="userSearchQuery" placeholder="Filter users by name or email..." class="search-input" />
+      </div>
+    </div>
+
+    <!-- Cards Grid -->
+    <div class="user-cards-grid" *ngIf="filteredUsers.length; else noFilteredUsers">
+      <div class="user-profile-card" *ngFor="let user of filteredUsers" [class.user-suspended]="user.suspended">
+        <!-- Badge overlay for suspended state -->
+        <div class="suspended-overlay" *ngIf="user.suspended">
+          <mat-icon class="suspension-icon">block</mat-icon>
+          <span>ACCOUNT SUSPENDED</span>
+        </div>
+
+        <!-- Badge overlay for evicted state -->
+        <div class="suspended-overlay" *ngIf="isUserEvicted(user.email) && !user.suspended" style="background: rgba(244, 63, 94, 0.85); color: white;">
+          <mat-icon class="suspension-icon">logout</mat-icon>
+          <span>SESSION EVICTED</span>
+        </div>
+
+        <div class="profile-card-header">
+          <!-- Dynamically Colored Initials Avatar -->
+          <div class="profile-avatar bg-violet">
+            {{ user.firstName[0] }}{{ user.lastName[0] }}
+          </div>
+          <div class="profile-meta">
+            <h4>{{ user.firstName }} {{ user.lastName }}</h4>
+            <p class="profile-email">{{ user.email }}</p>
+            <p class="profile-date">Joined: {{ user.createdAt }}</p>
+          </div>
+          <span class="premium-tier-badge" *ngIf="user.isPremium">
+            <mat-icon>stars</mat-icon>
+            <span>VIP</span>
+          </span>
+        </div>
+
+        <!-- Badges Grid detailing stored stubs count -->
+        <div class="profile-badges-title">Ledger Data Stubs</div>
+        <div class="profile-badges-grid">
+          <div class="ledger-badge expenses-badge">
+            <mat-icon>payments</mat-icon>
+            <div class="badge-nums">{{ user.storedData?.expenses || 0 }}</div>
+            <div class="badge-label">Expenses</div>
+          </div>
+          <div class="ledger-badge budgets-badge">
+            <mat-icon>donut_large</mat-icon>
+            <div class="badge-nums">{{ user.storedData?.budgets || 0 }}</div>
+            <div class="badge-label">Budgets</div>
+          </div>
+          <div class="ledger-badge invoices-badge">
+            <mat-icon>receipt</mat-icon>
+            <div class="badge-nums">{{ user.storedData?.invoices || 0 }}</div>
+            <div class="badge-label">Invoices</div>
+          </div>
+          <div class="ledger-badge goals-badge">
+            <mat-icon>flag</mat-icon>
+            <div class="badge-nums">{{ user.storedData?.goals || 0 }}</div>
+            <div class="badge-label">Goals</div>
+          </div>
+        </div>
+
+        <!-- Administrative Actions -->
+        <div class="profile-actions" style="flex-wrap: wrap; gap: 8px;">
+          <button class="action-btn premium-btn" [class.is-vip]="user.isPremium" (click)="togglePremium(user)">
+            <mat-icon>{{ user.isPremium ? 'star_half' : 'stars' }}</mat-icon>
+            <span>{{ user.isPremium ? 'Revoke VIP' : 'Grant VIP' }}</span>
+          </button>
+          <button class="action-btn alert-btn" (click)="pushSecurityAlert(user)" [disabled]="user.suspended">
+            <mat-icon>notification_important</mat-icon>
+            <span>Alert Challenge</span>
+          </button>
+          <button class="action-btn ban-btn" (click)="toggleSuspension(user)">
+            <mat-icon>{{ user.suspended ? 'lock_open' : 'lock_person' }}</mat-icon>
+            <span>{{ user.suspended ? 'Reinstate' : 'Suspend' }}</span>
+          </button>
+          <button class="action-btn" [class.ban-btn]="!isUserEvicted(user.email)" [class.premium-btn]="isUserEvicted(user.email)" (click)="isUserEvicted(user.email) ? reinstateUser(user.email) : evictUser(user.email)" [disabled]="user.suspended" style="border-radius: 12px; font-weight: 700; font-size: 0.78rem; padding: 8px 10px;">
+            <mat-icon>{{ isUserEvicted(user.email) ? 'login' : 'logout' }}</mat-icon>
+            <span>{{ isUserEvicted(user.email) ? 'Un-Evict' : 'Evict' }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noFilteredUsers>
+      <div class="no-records-card">
+        <mat-icon class="no-records-icon">search_off</mat-icon>
+        <p>No user accounts match your search filter.</p>
+      </div>
+    </ng-template>
+  </div>
+
+  <!-- Tab Content: Security Logs -->
+  <div class="tab-pane" *ngIf="activeTab === 'logs'">
+    <div class="tab-pane-header" style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;">
+      <div class="search-box-wrapper" style="flex: 1; min-width: 250px;">
+        <mat-icon class="search-icon">search</mat-icon>
+        <input type="text" [(ngModel)]="logSearchQuery" placeholder="Filter session history by email or role..." class="search-input" style="width: 100%;" />
+      </div>
+      <button class="backup-trigger-btn teal-glow" style="margin: 0; padding: 10px 20px; font-size: 0.85rem; border-radius: 14px; max-width: max-content; width: auto; font-weight: 700; height: 46px;" (click)="exportAuditLogs()">
+        <mat-icon style="font-size: 1.15rem; width: 18px; height: 18px; margin-right: 6px;">download</mat-icon>
+        <span>Export SOC2 Audit CSV</span>
+      </button>
+    </div>
+
+    <div class="table-card-wrapper" *ngIf="filteredLogs.length; else noFilteredLogs">
+      <table class="admin-audit-table">
+        <thead>
+          <tr>
+            <th>Security Subject (Email)</th>
+            <th>Role Node</th>
+            <th>Authentication Timestamp</th>
+            <th>CORS Verification</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let entry of filteredLogs">
+            <td>
+              <div class="table-user-cell">
+                <mat-icon class="user-cell-icon">verified_user</mat-icon>
+                <span>{{ entry.email }}</span>
+              </div>
+            </td>
+            <td>
+              <span class="role-chip" [class.role-admin]="entry.role === 'admin'">
+                {{ entry.role | uppercase }}
+              </span>
+            </td>
+            <td class="timestamp-cell">{{ entry.time | date:'medium' }}</td>
+            <td>
+              <span class="status-pill success-pill">
+                <mat-icon>shield</mat-icon>
+                <span>{{ entry.status || 'SUCCESS' }}</span>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ng-template #noFilteredLogs>
+      <div class="no-records-card">
+        <mat-icon class="no-records-icon">receipt_long</mat-icon>
+        <p>No session audits match your search filter.</p>
+      </div>
+    </ng-template>
+  </div>
+
+  <!-- Tab Content: System Controls -->
+  <div class="tab-pane" *ngIf="activeTab === 'controls'">
+    <div class="controls-overview-grid">
+      <!-- Simulator Parameters -->
+      <div class="overview-card pane-controls">
+        <h3 class="pane-title">
+          <mat-icon>settings_suggest</mat-icon>
+          <span>Mainframe Parameters Tuning</span>
+        </h3>
+
+        <div class="settings-list">
+          <div class="setting-row">
+            <div class="setting-desc">
+              <div class="setting-title">Global Read-Only Maintenance Lock</div>
+              <div class="setting-subtitle">Halts updates across budgets, expenses, and invoices stubs globally.</div>
+            </div>
+            <div class="switch-container">
+              <label class="glass-switch">
+                <input type="checkbox" [(ngModel)]="maintenanceMode" (change)="toggleMaintenance()" />
+                <span class="switch-slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-desc">
+              <div class="setting-title">Deep Learning Predictive AI Models</div>
+              <div class="setting-subtitle">Allocates high-compute GPU tensors for the CashFlow forecast simulator.</div>
+            </div>
+            <div class="switch-container">
+              <label class="glass-switch">
+                <input type="checkbox" [(ngModel)]="aiComputeTurbo" (change)="toggleAiTurbo()" />
+                <span class="switch-slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-desc">
+              <div class="setting-title">Global API Throttling Strategy</div>
+              <div class="setting-subtitle">Limits maximum API requests rate globally to avoid sandbox denial of service.</div>
+            </div>
+            <div class="select-container">
+              <select [(ngModel)]="rateLimitStrategy" (change)="updateRateLimit(rateLimitStrategy)" class="glass-select">
+                <option value="None">No Limits (Development)</option>
+                <option value="Standard">Standard Rate Limit (60 req/min)</option>
+                <option value="Strict">Strict Sandbox Rate Limit (10 req/min)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-desc">
+              <div class="setting-title">Bank Accounts Synchronization Frequency</div>
+              <div class="setting-subtitle">Controls CORS preflight check intervals for checking account ledger synchronizations.</div>
+            </div>
+            <div class="select-container">
+              <select [(ngModel)]="syncFrequency" class="glass-select" (change)="onSyncFrequencyChange()">
+                <option value="realtime">Real-Time Sync Ready</option>
+                <option value="hourly">Hourly Cache Flush</option>
+                <option value="daily">Daily Cron Batch</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ledger System Actions -->
+      <div class="overview-card pane-backup">
+        <h3 class="pane-title">
+          <mat-icon>storage</mat-icon>
+          <span>Ledger Administrative Actions</span>
+        </h3>
+
+        <div class="actions-panel">
+          <!-- Database stats -->
+          <div class="db-stats-panel" style="margin-bottom: 1.5rem; background: rgba(255, 255, 255, 0.5); border: 1.5px solid rgba(15, 23, 42, 0.04); border-radius: 20px; padding: 1.2rem;">
+            <div class="db-stats-title" style="font-weight: 800; font-size: 0.82rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
+              <mat-icon style="font-size: 1rem; width: 16px; height: 16px;">table_chart</mat-icon>
+              <span>Mainframe H2 Row Diagnostics</span>
+            </div>
+            <div class="db-stats-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+              <div class="db-stat-item" style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(15,23,42,0.03); padding-bottom: 4px;">
+                <span style="font-size: 0.82rem; color: #64748b;">Users</span>
+                <span style="font-size: 0.82rem; font-weight: 700; color: #1e293b;">{{ dbStats.users }}</span>
+              </div>
+              <div class="db-stat-item" style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(15,23,42,0.03); padding-bottom: 4px;">
+                <span style="font-size: 0.82rem; color: #64748b;">Workspaces</span>
+                <span style="font-size: 0.82rem; font-weight: 700; color: #1e293b;">{{ dbStats.workspaces }}</span>
+              </div>
+              <div class="db-stat-item" style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(15,23,42,0.03); padding-bottom: 4px;">
+                <span style="font-size: 0.82rem; color: #64748b;">Expenses</span>
+                <span style="font-size: 0.82rem; font-weight: 700; color: #1e293b;">{{ dbStats.expenses }}</span>
+              </div>
+              <div class="db-stat-item" style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(15,23,42,0.03); padding-bottom: 4px;">
+                <span style="font-size: 0.82rem; color: #64748b;">Budgets</span>
+                <span style="font-size: 0.82rem; font-weight: 700; color: #1e293b;">{{ dbStats.budgets }}</span>
+              </div>
+              <div class="db-stat-item" style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(15,23,42,0.03); padding-bottom: 4px;">
+                <span style="font-size: 0.82rem; color: #64748b;">Invoices</span>
+                <span style="font-size: 0.82rem; font-weight: 700; color: #1e293b;">{{ dbStats.invoices }}</span>
+              </div>
+              <div class="db-stat-item" style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(15,23,42,0.03); padding-bottom: 4px;">
+                <span style="font-size: 0.82rem; color: #64748b;">Audit Logs</span>
+                <span style="font-size: 0.82rem; font-weight: 700; color: #1e293b;">{{ dbStats.auditEvents }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Total Api Request count badge -->
+          <div class="traffic-counter" style="margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; background: rgba(13, 148, 136, 0.05); border: 1px solid rgba(13, 148, 136, 0.15); border-radius: 16px; padding: 12px 16px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <mat-icon style="color: #0d9488;">traffic</mat-icon>
+              <span style="font-size: 0.85rem; font-weight: 700; color: #0f766e;">Total API Requests Captured</span>
+            </div>
+            <span style="font-size: 1.15rem; font-weight: 800; color: #0d9488;">{{ requestCount | number }}</span>
+          </div>
+
+          <!-- Purge and seed sandbox actions -->
+          <div class="db-sandbox-controls" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 1.5rem;">
+            <button (click)="seedDatabase()" class="backup-trigger-btn teal-glow" style="padding: 12px; background: rgba(13, 148, 136, 0.08); border: 1.5px solid rgba(13, 148, 136, 0.2); color: #0d9488; justify-content: center;">
+              <mat-icon class="btn-icon">playlist_add</mat-icon>
+              <span>Seed Sandbox Ledger Data</span>
+            </button>
+            <button (click)="purgeDatabase()" class="action-btn ban-btn" style="padding: 12px; border-radius: 16px; justify-content: center; max-width: 100%;">
+              <mat-icon class="btn-icon">delete_sweep</mat-icon>
+              <span>Purge Sandbox User Records</span>
+            </button>
+          </div>
+
+          <p class="backup-note">
+            Perform comprehensive database stubs synchronization backups. Exports all budgets, expenses, workspaces and security details.
+          </p>
+
+          <button class="backup-trigger-btn" [class.loading]="isBackingUp" (click)="triggerBackup()">
+            <mat-icon class="btn-icon" *ngIf="!isBackingUp && !backupComplete">backup</mat-icon>
+            <mat-icon class="btn-icon spinning" *ngIf="isBackingUp">sync</mat-icon>
+            <mat-icon class="btn-icon" *ngIf="backupComplete && !isBackingUp">task_alt</mat-icon>
+            <span>
+              {{ isBackingUp ? 'Compiling Database Backups...' : (backupComplete ? 'Ledger Backup Verified' : 'Trigger Ledger Backup') }}
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Emergency Broadcast Console -->
+    <div class="overview-card pane-broadcast violet-glow" style="margin-top: 1.8rem;">
+      <h3 class="pane-title">
+        <mat-icon>campaign</mat-icon>
+        <span>Emergency Announcement Broadcaster</span>
+      </h3>
+      <p class="pane-subtitle" style="color: #64748b; font-size: 0.88rem; margin-top: -0.5rem; margin-bottom: 1.2rem;">
+        Broadcast emergency system banners directly to all active user dashboards in real-time using STOMP WebSockets.
+      </p>
+      
+      <div class="broadcast-console">
+        <textarea [(ngModel)]="announcementMessage" placeholder="Type system announcement message here... (e.g. '⚠ Scheduled Database Maintenance at 12:00 PM EST. Writes will be locked.')" class="glass-textarea" rows="3" style="width: 100%; padding: 12px; border-radius: 16px; border: 1.5px solid rgba(15, 23, 42, 0.08); background: rgba(255, 255, 255, 0.7); box-sizing: border-box; font-family: inherit; font-size: 0.95rem; font-weight: 600; color: #0f172a; outline: none; transition: all 0.25s ease;"></textarea>
+        <div class="broadcast-actions" style="display: flex; gap: 10px; margin-top: 1rem;">
+          <button (click)="broadcastAnnouncement()" class="backup-trigger-btn" style="flex: 1; padding: 12px; justify-content: center;">
+            <mat-icon class="btn-icon">send</mat-icon>
+            <span>Broadcast Announcement</span>
+          </button>
+          <button (click)="clearAnnouncement()" class="action-btn ban-btn" style="padding: 12px 20px; font-weight: 700; border-radius: 14px; max-width: fit-content; justify-content: center; height: auto;" [disabled]="!activeAnnouncement">
+            <mat-icon>cancel</mat-icon>
+            <span>Clear Active Banner</span>
+          </button>
+        </div>
+        <div class="active-banner-status" *ngIf="activeAnnouncement" style="margin-top: 1rem; padding: 10px 15px; background: rgba(124, 58, 237, 0.08); border: 1px solid rgba(124, 58, 237, 0.18); border-radius: 12px; font-size: 0.85rem; color: #7c3aed; display: flex; align-items: center; gap: 8px;">
+          <mat-icon style="font-size: 1.1rem; width: 18px; height: 18px;">info</mat-icon>
+          <span><strong>Active Broadcast:</strong> "{{ activeAnnouncement }}"</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dynamic Feature Flags (Remote Config) -->
+    <div class="overview-card pane-broadcast teal-glow" style="margin-top: 1.8rem;">
+      <h3 class="pane-title">
+        <mat-icon>toggle_on</mat-icon>
+        <span>Dynamic Feature Flags (Remote Config)</span>
+      </h3>
+      <p class="pane-subtitle" style="color: #64748b; font-size: 0.88rem; margin-top: -0.5rem; margin-bottom: 1.2rem;">
+        Toggle premium features dynamically across all active user dashboards in real-time.
+      </p>
+      
+      <div class="settings-list">
+        <div class="setting-row" style="border-bottom: 1.5px solid rgba(15, 23, 42, 0.04); padding-bottom: 1.5rem;">
+          <div class="setting-desc">
+            <div class="setting-title">AI Advice Chatbot</div>
+            <div class="setting-subtitle">Enables the intelligent financial assistant chat bubble on user dashboards.</div>
+          </div>
+          <div class="switch-container">
+            <label class="glass-switch">
+              <input type="checkbox" [(ngModel)]="aiAdvisorEnabled" (change)="toggleFeatureFlag('aiAdvisorEnabled', aiAdvisorEnabled)" />
+              <span class="switch-slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="setting-row" style="border-bottom: 1.5px solid rgba(15, 23, 42, 0.04); padding-bottom: 1.5rem;">
+          <div class="setting-desc">
+            <div class="setting-title">OCR Receipts Scanner</div>
+            <div class="setting-subtitle">Toggles the AI OCR scanner interface for smart expense uploads.</div>
+          </div>
+          <div class="switch-container">
+            <label class="glass-switch">
+              <input type="checkbox" [(ngModel)]="ocrScannerEnabled" (change)="toggleFeatureFlag('ocrScannerEnabled', ocrScannerEnabled)" />
+              <span class="switch-slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-desc">
+            <div class="setting-title">Bank Accounts Synchronization</div>
+            <div class="setting-subtitle">Toggles Plaid sandbox bank credentials sync panels.</div>
+          </div>
+          <div class="switch-container">
+            <label class="glass-switch">
+              <input type="checkbox" [(ngModel)]="bankSyncEnabled" (change)="toggleFeatureFlag('bankSyncEnabled', bankSyncEnabled)" />
+              <span class="switch-slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Tab Content: Cloud Workspaces -->
+  <div class="tab-pane" *ngIf="activeTab === 'workspaces'">
+    <div class="overview-card pane-workspaces violet-glow">
+      <h3 class="pane-title">
+        <mat-icon>cloud_queue</mat-icon>
+        <span>Workspace Cloud Storage Manager</span>
+      </h3>
+      <p class="pane-subtitle">Manage shared cloud partitions, scale disk quotas, and lock or freeze inactive entities.</p>
+
+      <div class="workspace-list" style="margin-top: 1.5rem;">
+        <div class="workspace-row-card" *ngFor="let ws of workspaces" [class.workspace-frozen]="ws.isFrozen">
+          <div class="ws-info">
+            <div class="ws-icon-wrapper">
+              <mat-icon>{{ ws.isFrozen ? 'cloud_off' : 'cloud_done' }}</mat-icon>
+            </div>
+            <div class="ws-meta">
+              <span class="ws-name">{{ ws.name }}</span>
+              <span class="ws-owner">Owner: {{ ws.ownerEmail }}</span>
+            </div>
+          </div>
+
+          <div class="ws-controls">
+            <div class="slider-wrapper">
+              <span class="quota-label">Disk Quota: {{ ws.storageCapacityGb }} GB</span>
+              <input type="range" min="1" max="100" [(ngModel)]="ws.storageCapacityGb" (change)="updateWorkspaceLimit(ws)" class="glass-range-slider" [disabled]="ws.isFrozen" />
+            </div>
+
+            <div class="ws-actions">
+              <button class="action-btn" [class.freeze-btn]="!ws.isFrozen" [class.unfreeze-btn]="ws.isFrozen" (click)="ws.isFrozen = !ws.isFrozen; updateWorkspaceLimit(ws)">
+                <mat-icon>{{ ws.isFrozen ? 'lock_open' : 'lock' }}</mat-icon>
+                <span>{{ ws.isFrozen ? 'Unfreeze' : 'Freeze' }}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab Content: Email & Invites -->
+  <div class="tab-pane" *ngIf="activeTab === 'email'">
+    <div class="controls-overview-grid">
+      <!-- Email Composer -->
+      <div class="overview-card pane-controls violet-glow">
+        <h3 class="pane-title">
+          <mat-icon>email</mat-icon>
+          <span>System Email Dispatcher</span>
+        </h3>
+        <p class="pane-subtitle" style="color: #64748b; font-size: 0.88rem; margin-top: -0.5rem; margin-bottom: 1.2rem;">
+          Dispatch mock notifications or policy warnings to user emails directly from system mainframe.
+        </p>
+        
+        <div class="settings-list" style="gap: 1.2rem;">
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <label style="font-size: 0.82rem; font-weight: 700; color: #64748b; text-transform: uppercase;">Recipient Email Address</label>
+            <input type="email" [(ngModel)]="emailTo" placeholder="e.g. tony@starkindustries.com" class="search-input" style="padding-left: 16px;" />
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <label style="font-size: 0.82rem; font-weight: 700; color: #64748b; text-transform: uppercase;">Subject Line</label>
+            <input type="text" [(ngModel)]="emailSubject" placeholder="e.g. Action Required: Revoked Premium Status" class="search-input" style="padding-left: 16px;" />
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <label style="font-size: 0.82rem; font-weight: 700; color: #64748b; text-transform: uppercase;">Message Body</label>
+            <textarea [(ngModel)]="emailBody" placeholder="Type notification details..." class="glass-textarea" rows="4" style="width: 100%; padding: 12px; border-radius: 16px; border: 1.5px solid rgba(15, 23, 42, 0.08); background: rgba(255, 255, 255, 0.7); box-sizing: border-box; font-family: inherit; font-size: 0.95rem; font-weight: 600; color: #0f172a; outline: none; transition: all 0.25s ease;"></textarea>
+          </div>
+          
+          <button class="backup-trigger-btn" style="width: 100%; max-width: 100%; padding: 12px; margin-top: 1rem; justify-content: center;" (click)="sendEmail()">
+            <mat-icon class="btn-icon">send</mat-icon>
+            <span>Dispatch System Email</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Pending Workspace Invitations -->
+      <div class="overview-card pane-backup teal-glow">
+        <h3 class="pane-title">
+          <mat-icon>group_add</mat-icon>
+          <span>Workspace Invitations Manager</span>
+        </h3>
+        <p class="pane-subtitle" style="color: #64748b; font-size: 0.88rem; margin-top: -0.5rem; margin-bottom: 1.2rem;">
+          Track and cancel outstanding invitations sent to workspace collaborators.
+        </p>
+
+        <div class="table-card-wrapper" style="max-height: 380px; overflow-y: auto;">
+          <table class="admin-audit-table">
+            <thead>
+              <tr>
+                <th>Invitee Email</th>
+                <th>Workspace</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let invite of invitations">
+                <td style="font-weight: 700; color: #0f172a;">{{ invite.email }}</td>
+                <td style="color: #475569;">{{ invite.workspaceName }}</td>
+                <td>
+                  <span class="role-chip">{{ invite.role }}</span>
+                </td>
+                <td>
+                  <span class="status-pill" [class.success-pill]="!invite.accepted && !invite.expired" [class.warning-pill]="invite.expired" [class.success-pill]="invite.accepted">
+                    {{ invite.accepted ? 'ACCEPTED' : (invite.expired ? 'EXPIRED' : 'PENDING') }}
+                  </span>
+                </td>
+                <td>
+                  <button class="action-btn ban-btn" style="padding: 6px 12px; font-size: 0.72rem; border-radius: 8px;" (click)="cancelInvitation(invite.id)">
+                    <mat-icon style="font-size: 0.9rem; width: 14px; height: 14px;">delete_outline</mat-icon>
+                    <span>Cancel</span>
+                  </button>
+                </td>
+              </tr>
+              <tr *ngIf="invitations.length === 0">
+                <td colspan="5" style="text-align: center; color: #64748b; padding: 2rem;">
+                  <mat-icon style="font-size: 2rem; width: auto; height: auto; margin-bottom: 0.5rem;">mail_lock</mat-icon>
+                  <p>No invitations found in database.</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

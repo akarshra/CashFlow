@@ -1,0 +1,192 @@
+<div class="roadmap-page">
+  <header class="roadmap-header">
+    <a routerLink="/home" class="back-home-btn">
+      <mat-icon>arrow_back</mat-icon> Back to CashFlow Home
+    </a>
+    <div class="header-main-flex">
+      <div class="header-text-block">
+        <h1 class="page-title">{{ pageTitle }}</h1>
+        <p class="page-subtitle">{{ pageSubtitle }}</p>
+      </div>
+      <div class="header-canvas-container">
+        <canvas #roadmapHeaderCanvas class="roadmap-header-canvas"></canvas>
+      </div>
+    </div>
+  </header>
+
+  <div class="roadmap-grid">
+    <!-- Controls section -->
+    <mat-card class="roadmap-card controls-card" (mousemove)="onControlsCardMove($event, $any($event.currentTarget))" (mouseleave)="onControlsCardLeave($any($event.currentTarget))">
+      <h2 class="card-title"><mat-icon>settings_input_composite</mat-icon> Simulator Adjustments</h2>
+      
+      <div class="control-group">
+        <div class="control-label">
+          <span>{{ reservesLabel }}</span>
+          <strong>{{ formatCurrency(initialReserves) }}</strong>
+        </div>
+        <input type="range" class="slider" [min]="reservesMin" [max]="reservesMax" [step]="reservesStep" [(ngModel)]="initialReserves" (input)="onSliderChange()">
+      </div>
+
+      <div class="control-group">
+        <div class="control-label">
+          <span>{{ revenueLabel }}</span>
+          <strong>{{ formatCurrency(monthlyRevenue) }}</strong>
+        </div>
+        <input type="range" class="slider" [min]="revenueMin" [max]="revenueMax" [step]="revenueStep" [(ngModel)]="monthlyRevenue" (input)="onSliderChange()">
+      </div>
+
+      <div class="control-group">
+        <div class="control-label">
+          <span>{{ expensesLabel }}</span>
+          <strong>{{ formatCurrency(monthlyExpenses) }}</strong>
+        </div>
+        <input type="range" class="slider" [min]="expensesMin" [max]="expensesMax" [step]="expensesStep" [(ngModel)]="monthlyExpenses" (input)="onSliderChange()">
+      </div>
+
+      <div class="control-group">
+        <div class="control-label">
+          <span>Monthly Growth Rate (%)</span>
+          <strong>{{ growthRate }}%</strong>
+        </div>
+        <input type="range" class="slider" min="-10" max="50" step="1" [(ngModel)]="growthRate" (input)="onSliderChange()">
+      </div>
+
+      <div class="control-group">
+        <div class="control-label">
+          <span>Projection Span</span>
+          <strong>{{ durationYears }} {{ durationLabel }}</strong>
+        </div>
+        <input type="range" class="slider" [min]="durationMin" [max]="durationMax" [step]="durationStep" [(ngModel)]="durationYears" (input)="onSliderChange()">
+      </div>
+    </mat-card>
+
+    <!-- Collaborative Presence Simulator -->
+    <mat-card class="roadmap-card collaborative-card violet-glow" style="margin-top: 1.5rem;" (mousemove)="onControlsCardMove($event, $any($event.currentTarget))" (mouseleave)="onControlsCardLeave($any($event.currentTarget))">
+      <h2 class="card-title">
+        <mat-icon style="color: #7c3aed;">hub</mat-icon> CFO Presence Simulator
+      </h2>
+      <p class="card-subtitle" style="font-size: 0.82rem; color: #64748b; margin-top: 0; line-height: 1.5; font-weight: 600;">
+        Simulate a real-time collaborative forecasting session with your executive team members.
+      </p>
+
+      <!-- Active Teammate Cards -->
+      <div class="teammates-presence-list" style="margin-top: 1rem; display: flex; flex-direction: column; gap: 8px;">
+        <div class="teammate-row" *ngFor="let member of collaborators" style="display: flex; justify-content: space-between; align-items: center; background: rgba(255, 255, 255, 0.4); border: 1px solid rgba(15, 23, 42, 0.04); border-radius: 12px; padding: 10px 14px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div class="avatar-presence" [style.background]="member.color" style="width: 28px; height: 28px; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 800;">
+              {{ member.initials }}
+            </div>
+            <div style="display: flex; flex-direction: column;">
+              <strong style="font-size: 0.8rem; color: #0f172a;">{{ member.name }}</strong>
+              <span style="font-size: 0.68rem; color: #64748b; font-weight: 600;">{{ member.role }}</span>
+            </div>
+          </div>
+          <span class="presence-pulse" [style.background]="member.active ? '#10b981' : '#cbd5e1'" [style.box-shadow]="member.active ? '0 0 10px #10b981' : 'none'" style="width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span>
+        </div>
+      </div>
+
+      <div class="session-simulator-actions" style="margin-top: 1.25rem;">
+        <!-- Simulated Chat Bubble -->
+        <div class="cfo-simulated-chat" *ngIf="simulatedChatMessage" style="background: rgba(124, 58, 237, 0.08); border: 1px solid rgba(124, 58, 237, 0.18); border-radius: 12px; padding: 10px 14px; margin-bottom: 1rem; font-size: 0.82rem; line-height: 1.4; color: #5b21b6; font-weight: 600; animation: fadeIn 0.3s ease;">
+          <strong>{{ simulatedChatSender }}:</strong> "{{ simulatedChatMessage }}"
+        </div>
+
+        <button mat-raised-button class="glow-submit-btn" style="background: linear-gradient(135deg, #7c3aed 0%, #6366f1 100%) !important; color: white !important; width: 100%; border: none; padding: 10px 0; border-radius: 12px; font-weight: 800; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(124, 58, 237, 0.25);" (click)="toggleCfoSimulation()" [disabled]="simulatingCfo">
+          <mat-icon *ngIf="!simulatingCfo">co_present</mat-icon>
+          <mat-icon *ngIf="simulatingCfo" class="spinning">sync</mat-icon>
+          <span>{{ simulatingCfo ? 'Live Session Active...' : 'Simulate Live CFO Session' }}</span>
+        </button>
+      </div>
+    </mat-card>
+
+    <!-- Visualizer section -->
+    <div class="visualizer-container">
+      <!-- Metrics row -->
+      <div class="metrics-row">
+        <mat-card class="roadmap-card metric-card" (mousemove)="onCardMove($event, $any($event.currentTarget))" (mouseleave)="onCardLeave($any($event.currentTarget))">
+          <mat-icon class="icon-savings">savings</mat-icon>
+          <div class="metric-info">
+            <span>{{ runwayLabel }}</span>
+            <h3>{{ runwayMonths }}</h3>
+          </div>
+        </mat-card>
+        
+        <mat-card class="roadmap-card metric-card" (mousemove)="onCardMove($event, $any($event.currentTarget))" (mouseleave)="onCardLeave($any($event.currentTarget))">
+          <mat-icon [class.icon-pos]="netSavings >= 0" [class.icon-neg]="netSavings < 0">trending_up</mat-icon>
+          <div class="metric-info">
+            <span>{{ netCashLabel }}</span>
+            <h3 [style.color]="netSavings >= 0 ? '#10b981' : '#f43f5e'">{{ formatCurrency(animatedNetSavings) }}</h3>
+          </div>
+        </mat-card>
+
+        <mat-card class="roadmap-card metric-card" (mousemove)="onCardMove($event, $any($event.currentTarget))" (mouseleave)="onCardLeave($any($event.currentTarget))">
+          <mat-icon class="icon-wealth">shield</mat-icon>
+          <div class="metric-info">
+            <span>{{ terminalWealthLabel }}</span>
+            <h3>{{ formatCurrency(animatedTerminalWealth) }}</h3>
+          </div>
+        </mat-card>
+      </div>
+
+      <!-- Chart card -->
+      <mat-card class="roadmap-card chart-card" (mousemove)="onCardMove($event, $any($event.currentTarget))" (mouseleave)="onCardLeave($any($event.currentTarget))">
+        <h2 class="card-title"><mat-icon>insights</mat-icon> {{ chartLabel }}</h2>
+        <div class="chart-wrapper">
+          <canvas #projectionChart></canvas>
+        </div>
+      </mat-card>
+
+      <!-- AI Runway Advisor Card -->
+      <mat-card class="roadmap-card ai-advisor-card widget-card" style="margin-top: 24px;" (mousemove)="onCardMove($event, $any($event.currentTarget))" (mouseleave)="onCardLeave($any($event.currentTarget))">
+        <div class="ai-card-header" style="display: flex; justify-content: space-between; align-items: center; width: 100%; border-bottom: 1px solid rgba(15, 23, 42, 0.04); padding-bottom: 12px; margin-bottom: 16px;">
+          <h2 class="card-title" style="margin: 0; display: flex; align-items: center; gap: 8px;">
+            <mat-icon style="color: #0d9488;" [class.spinning]="isAnalyzing">psychology</mat-icon> 
+            <span>{{ aiAdvisorHeader }}</span>
+          </h2>
+          <button mat-raised-button style="background: linear-gradient(135deg, #0d9488 0%, #06b6d4 100%); color: white; font-weight: 700; border-radius: 10px; height: 36px; box-shadow: 0 4px 10px rgba(13, 148, 136, 0.15);" (click)="generateAiBrief()" [disabled]="isAnalyzing">
+            <mat-icon>{{ isAnalyzing ? 'sync' : 'auto_awesome' }}</mat-icon> 
+            <span>{{ isAnalyzing ? 'Auditing Reserves...' : 'Ask Gemini' }}</span>
+          </button>
+        </div>
+
+        <!-- Simulated scanning status or results -->
+        <div class="ai-advisor-body">
+          <div *ngIf="isAnalyzing" class="ai-scanning-placeholder" style="text-align: center; padding: 2rem; color: #64748b; font-weight: 600;">
+            <div style="font-size: 2.2rem; margin-bottom: 8px; animation: bounce 1s infinite alternate;">🧠</div>
+            <p>Gemini is scanning cash reserves, calculating growth compound vectors, and drafting runway advisories...</p>
+            <div class="progress-track" style="margin-top: 1rem;"><div class="progress-bar emerald-bar" style="width: 100%; animation: slideBar 1.8s infinite linear;"></div></div>
+          </div>
+
+          <div *ngIf="!isAnalyzing && aiInsights" class="ai-insights-content" style="animation: fadeIn 0.4s ease both;">
+            <div class="ai-advisor-header-tag" style="background: rgba(13, 148, 136, 0.08); border: 1px solid rgba(13, 148, 136, 0.18); color: #0d9488; padding: 6px 12px; border-radius: 8px; font-weight: 700; font-size: 0.82rem; margin-bottom: 1rem; width: fit-content;">
+              ✔ Gemini 1.5 Flash Model verified - CashFlow Mainframe Analysis
+            </div>
+            <div class="insights-scroll" style="color: #475569; line-height: 1.6; font-size: 0.95rem; font-weight: 500;">
+              <p style="white-space: pre-line;">{{ aiInsights }}</p>
+            </div>
+            
+            <div class="advisor-checklists" style="margin-top: 1.25rem; display: grid; gap: 8px;">
+              <div *ngFor="let check of aiChecklist" class="checklist-row" style="display: flex; align-items: center; gap: 8px; font-size: 0.88rem; font-weight: 700; color: #0f172a;">
+                <mat-icon style="color: #10b981; font-size: 1.1rem; width: 18px; height: 18px;">task_alt</mat-icon>
+                <span>{{ check }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="!isAnalyzing && !aiInsights" class="ai-advisor-idle" style="text-align: center; padding: 2rem; color: #94a3b8; font-weight: 600; border: 1.5px dashed rgba(15, 23, 42, 0.06); border-radius: 20px;">
+            <mat-icon style="font-size: 2.5rem; width: 44px; height: 44px; color: #cbd5e1; margin-bottom: 8px;">insights</mat-icon>
+            <p>Ready to compile runway audits. Interact with the simulator values and click "Ask Gemini" to generate a predictive cash advisory brief.</p>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+
+  <section class="roadmap-cta">
+    <div class="cta-content">
+      <h2>Automate this forecast with real data.</h2>
+      <p>Synchronize your Supabase PostgreSQL transaction histories, utilize Gemini's actual predictive models, and connect your checking accounts securely via Plaid.</p>
+    </div>
+    <a mat-raised-button class="premium-cta-btn" routerLink="/register">Register Free Workspace</a>
+  </section>
+</div>

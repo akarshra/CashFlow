@@ -1,0 +1,132 @@
+<div class="module-container incomes-page">
+  <!-- Page Header -->
+  <div class="income-header">
+    <div>
+      <h2><mat-icon class="gold-icon">payments</mat-icon> Premium Income Ledger</h2>
+      <p>Synchronize passive cash flows, Stripe merchant pipelines, and consult client yields.</p>
+    </div>
+    <div class="currency-selector">
+      <mat-form-field appearance="fill" class="premium-form-field">
+        <mat-label>Display currency</mat-label>
+        <mat-select [(ngModel)]="selectedCurrency">
+          <mat-option *ngFor="let currency of availableCurrencies" [value]="currency">{{ currency }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <!-- Highlights & Quick Form Grid -->
+  <div class="income-grid">
+    <!-- Total Incomes Card -->
+    <mat-card class="premium-card metric-card animate-float">
+      <div class="card-glow-bg"></div>
+      <div class="metric-content">
+        <span class="metric-label">TOTAL ACCUMULATED CAPITAL</span>
+        <h3 class="metric-value">{{ formatTotal() }}</h3>
+        <p class="metric-subtitle">Live aggregated value synced across workspaces and active bank ledgers.</p>
+        <div class="glowing-orb"></div>
+      </div>
+    </mat-card>
+
+    <!-- Create Income Card -->
+    <mat-card class="premium-card income-form-card">
+      <div class="form-header">
+        <h3><mat-icon style="color: #06b6d4;">add_circle</mat-icon> Log New Inflow</h3>
+        <span class="pill-badge">Secure API Sync</span>
+      </div>
+      <div class="form-fields">
+        <mat-form-field appearance="outline" class="premium-field">
+          <mat-label>Revenue Source</mat-label>
+          <input matInput [(ngModel)]="newIncome.source" placeholder="e.g. Stripe SaaS retained" />
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="premium-field">
+          <mat-label>Inflow Amount (INR)</mat-label>
+          <input matInput type="number" [(ngModel)]="newIncome.amount" placeholder="0.00" />
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="premium-field">
+          <mat-label>Inflow Date</mat-label>
+          <input matInput type="date" [(ngModel)]="newIncome.date" />
+        </mat-form-field>
+      </div>
+      <button mat-raised-button class="premium-action-btn" (click)="createIncome()">
+        <mat-icon>bolt</mat-icon> Stream Inflow
+      </button>
+    </mat-card>
+  </div>
+
+  <!-- SVG Trend Visualizer Card -->
+  <mat-card class="premium-card trend-card">
+    <div class="trend-header">
+      <h3><mat-icon style="color: #5b5fef;">show_chart</mat-icon> Capital Inflow Trend</h3>
+      <span class="trend-badge">7-Day Moving Average</span>
+    </div>
+    
+    <div class="chart-container">
+      <svg viewBox="0 0 800 200" class="responsive-svg-chart">
+        <defs>
+          <linearGradient id="income-glow" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#5b5fef" stop-opacity="0.35" />
+            <stop offset="50%" stop-color="#06b6d4" stop-opacity="0.15" />
+            <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+          </linearGradient>
+          <linearGradient id="stroke-grad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#5b5fef" />
+            <stop offset="50%" stop-color="#06b6d4" />
+            <stop offset="100%" stop-color="#f59e0b" />
+          </linearGradient>
+        </defs>
+
+        <!-- Grid Lines -->
+        <line x1="50" y1="20" x2="750" y2="20" stroke="rgba(16, 42, 67, 0.05)" stroke-width="1" />
+        <line x1="50" y1="70" x2="750" y2="70" stroke="rgba(16, 42, 67, 0.05)" stroke-width="1" />
+        <line x1="50" y1="120" x2="750" y2="120" stroke="rgba(16, 42, 67, 0.05)" stroke-width="1" />
+        <line x1="50" y1="170" x2="750" y2="170" stroke="rgba(16, 42, 67, 0.08)" stroke-width="1.5" />
+
+        <!-- Gradient Area Fill -->
+        <path d="M 50 170 C 150 110, 250 130, 350 80 C 450 40, 550 90, 650 30 C 700 50, 750 10, 750 170 Z" fill="url(#income-glow)" />
+
+        <!-- Smooth Path Line -->
+        <path d="M 50 170 C 150 110, 250 130, 350 80 C 450 40, 550 90, 650 30 C 700 50, 750 10" fill="none" stroke="url(#stroke-grad)" stroke-width="3" stroke-linecap="round" />
+
+        <!-- Interactive Glow Nodes -->
+        <circle cx="350" cy="80" r="6" fill="#06b6d4" stroke="#ffffff" stroke-width="2" class="glow-node" />
+        <circle cx="650" cy="30" r="6" fill="#5b5fef" stroke="#ffffff" stroke-width="2" class="glow-node" />
+        <circle cx="750" cy="10" r="6" fill="#f59e0b" stroke="#ffffff" stroke-width="2" class="glow-node" />
+
+        <!-- X-Axis Labels -->
+        <text x="50" y="190" fill="#64748b" font-size="10" font-weight="600">May 15</text>
+        <text x="250" y="190" fill="#64748b" font-size="10" font-weight="600">May 20</text>
+        <text x="450" y="190" fill="#64748b" font-size="10" font-weight="600">May 25</text>
+        <text x="650" y="190" fill="#64748b" font-size="10" font-weight="600">May 28</text>
+        <text x="750" y="190" fill="#64748b" font-size="10" font-weight="600">Today</text>
+      </svg>
+    </div>
+  </mat-card>
+
+  <!-- Ledger Incomes Table -->
+  <mat-card class="premium-card ledger-card">
+    <div class="ledger-header">
+      <h3><mat-icon style="color: #f59e0b;">list_alt</mat-icon> Capital Cash-Flow Ledger</h3>
+      <span class="entries-count">{{ incomes.length }} ACTIVE STREAMS</span>
+    </div>
+
+    <div class="ledger-list">
+      <div class="ledger-row glass-row animate-row" *ngFor="let item of incomes">
+        <div class="row-left">
+          <div class="icon-avatar">
+            <mat-icon>{{ getSourceIcon(item.source) }}</mat-icon>
+          </div>
+          <div class="row-details">
+            <h4 class="source-title">{{ item.source }}</h4>
+            <span class="source-date">{{ item.date }}</span>
+          </div>
+        </div>
+        
+        <div class="row-right">
+          <div class="source-amount">{{ formatAmount(item.amount) }}</div>
+          <span class="verified-badge"><mat-icon>verified</mat-icon> Synced</span>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+</div>

@@ -1,0 +1,71 @@
+.auth-shell {
+  display: flex;
+  justify-content: center;
+  margin: 80px auto;
+  padding: 0 16px;
+}
+.centered-shell {
+  max-width: 520px;
+}
+.auth-card {
+  width: 100%;
+  padding: 28px;
+  background: rgba(255, 255, 255, 0.98);
+  color: #0f172a;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 28px;
+  box-shadow: 0 24px 80px rgba(15, 23, 42, 0.08);
+  animation: fadeInUp 0.6s ease both;
+}
+.register-card {
+  max-width: 520px;
+}
+.card-head h1 {
+  margin: 0 0 10px;
+  font-size: 2rem;
+  line-height: 1.1;
+}
+.card-head p {
+  margin: 0 0 24px;
+  color: #475569;
+  font-size: 0.96rem;
+  line-height: 1.6;
+}
+.full-width {
+  width: 100%;
+}
+.action-button {
+  width: 100%;
+  margin-top: 18px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.action-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px rgba(248, 146, 29, 0.18);
+}
+.footer-link {
+  margin-top: 20px;
+  color: #475569;
+  font-size: 0.95rem;
+}
+.footer-link a {
+  margin-left: 4px;
+  color: #1d4ed8;
+  font-weight: 600;
+}
+.mat-form-field .mat-form-field-label {
+  color: rgba(15, 23, 42, 0.7) !important;
+}
+.mat-form-field .mat-input-element {
+  color: #0f172a !important;
+}
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

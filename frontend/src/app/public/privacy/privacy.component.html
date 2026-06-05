@@ -1,0 +1,77 @@
+<div class="document-page">
+  <div class="radial-glow glow-primary"></div>
+  <div class="radial-glow glow-secondary"></div>
+
+  <header class="document-header-bar">
+    <a routerLink="/home" class="back-home-btn">
+      <mat-icon>arrow_back</mat-icon> Back to CashFlow Home
+    </a>
+  </header>
+
+  <section class="document-header">
+    <span class="eyebrow"><mat-icon>gavel</mat-icon> Compliance & Safety</span>
+    <h1 class="document-title">Privacy Policy</h1>
+    <p class="document-subtitle">Last updated: June 1, 2026. Review how CashFlow handles transaction isolation, Plaid synchronizations, and Gemini AI data models securely.</p>
+  </section>
+
+  <!-- Document layout -->
+  <div class="document-container">
+    <!-- Left Navigation Sidebar -->
+    <mat-card class="document-sidebar">
+      <h3>Outline</h3>
+      <ul class="outline-links">
+        <li><button (click)="scrollToSection('sec-intro')">1. Introduction</button></li>
+        <li><button (click)="scrollToSection('sec-data')">2. Data We Collect</button></li>
+        <li><button (click)="scrollToSection('sec-ai')">3. AI Processing Models</button></li>
+        <li><button (click)="scrollToSection('sec-security')">4. Security & Encryption</button></li>
+        <li><button (click)="scrollToSection('sec-sharing')">5. Third-party Sharing</button></li>
+      </ul>
+    </mat-card>
+
+    <!-- Right Reading Pane -->
+    <mat-card class="document-content-pane" (mousemove)="onCardMove($event, $any($event.currentTarget))">
+      <div id="sec-intro" class="doc-section">
+        <h2>1. Introduction</h2>
+        <p>Welcome to CashFlow. We are highly committed to securing your financial data, transaction ledgers, and collaborative workspace files. This Privacy Policy documents how we compile, process, isolate, and secure details when you connect checking accounts via Plaid, upload invoice metadata, or trigger AI forecasting simulations.</p>
+      </div>
+
+      <hr class="separator">
+
+      <div id="sec-data" class="doc-section">
+        <h2>2. Data We Collect</h2>
+        <p>We process transaction structures strictly to deliver comprehensive tracking widgets on your enterprise dashboards:</p>
+        <ul>
+          <li><strong>Identity Details:</strong> Email credentials, workspace IDs, and premium stripe payment identifiers.</li>
+          <li><strong>Financial Credentials:</strong> Bank balance stubs, merchant descriptors, transaction categories, and monthly expense lists synchronizing over Plaid API endpoints.</li>
+          <li><strong>Document Images:</strong> Physical invoice photos, merchant receipts, and Base64 receipt structures sent to Gemini OCR.</li>
+        </ul>
+      </div>
+
+      <hr class="separator">
+
+      <div id="sec-ai" class="doc-section">
+        <h2>3. AI Processing Models</h2>
+        <p>When you trigger receipt scans, files are processed using true multimodal Gemini Vision RestClient setups. The physical images are parsed strictly in real time to resolve merchant rows, line costs, and tax codes. **CashFlow does not authorize third-party models to train on your persistent transactional ledgers.**</p>
+      </div>
+
+      <hr class="separator">
+
+      <div id="sec-security" class="doc-section">
+        <h2>4. Security & Encryption</h2>
+        <p>All sensitive connections utilize standard TLS 1.3 transport security. Database schemas are hosted inside isolated Supabase PostgreSQL rows protected by strict row-level security (RLS) policies. Collaborator logins are isolated under secure JWT validation profiles.</p>
+      </div>
+
+      <hr class="separator">
+
+      <div id="sec-sharing" class="doc-section">
+        <h2>5. Third-party Sharing</h2>
+        <p>We only share data with essential financial processors when explicitly configured by the workspace administrator:</p>
+        <ul>
+          <li><strong>Plaid Inc.:</strong> To connect checking balances securely using standard bank sync stubs.</li>
+          <li><strong>Stripe Inc.:</strong> To execute premium subscription checkouts, check coupon codes, and issue tax invoices.</li>
+          <li><strong>Firebase Services:</strong> To broadcast budget alerts, remote config details, and warning logs.</li>
+        </ul>
+      </div>
+    </mat-card>
+  </div>
+</div>

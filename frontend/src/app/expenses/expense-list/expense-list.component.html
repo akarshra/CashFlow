@@ -1,0 +1,146 @@
+<div class="module-container expense-list-page">
+  <!-- Page Header -->
+  <div class="expense-header">
+    <div>
+      <h2><mat-icon class="danger-icon">receipt_long</mat-icon> Corporate Expense Ledger</h2>
+      <p>Log transactions, track departmental burns, and export auditable CSV spreadsheets.</p>
+    </div>
+    
+    <div class="header-actions">
+      <div class="currency-selector">
+        <mat-form-field appearance="fill" class="premium-form-field">
+          <mat-label>Display currency</mat-label>
+          <mat-select [(ngModel)]="selectedCurrency" (selectionChange)="onCurrencyChange()">
+            <mat-option *ngFor="let currency of availableCurrencies" [value]="currency">{{ currency }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <a mat-raised-button class="premium-export-btn" [href]="exportUrl">
+        <mat-icon>cloud_download</mat-icon> Export CSV
+      </a>
+    </div>
+  </div>
+
+  <!-- Search & Donut Analytics Row -->
+  <div class="analytics-row">
+    <!-- Inline SVG Donut Chart -->
+    <mat-card class="premium-card donut-card">
+      <div class="donut-header">
+        <h3><mat-icon style="color: #5b5fef;">donut_large</mat-icon> Share by Category</h3>
+        <span class="badge">Aggregate Burn</span>
+      </div>
+
+      <div class="donut-chart-container">
+        <div class="svg-donut-wrapper">
+          <svg viewBox="0 0 42 42" class="donut-svg">
+            <circle class="donut-hole" cx="21" cy="21" r="15.91549430918954" fill="#ffffff"></circle>
+            <circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="rgba(16, 42, 67, 0.05)" stroke-width="4.5"></circle>
+
+            <!-- Software share segment -->
+            <circle class="donut-segment segment-soft" cx="21" cy="21" r="15.91549430918954" fill="transparent"
+              stroke="#5b5fef" stroke-width="4.5"
+              [attr.stroke-dasharray]="getCategoryShare('Software') + ' ' + (100 - getCategoryShare('Software'))"
+              stroke-dashoffset="25">
+            </circle>
+
+            <!-- Food share segment -->
+            <circle class="donut-segment segment-food" cx="21" cy="21" r="15.91549430918954" fill="transparent"
+              stroke="#06b6d4" stroke-width="4.5"
+              [attr.stroke-dasharray]="getCategoryShare('Food') + ' ' + (100 - getCategoryShare('Food'))"
+              [attr.stroke-dashoffset]="100 - getCategoryShare('Software') + 25">
+            </circle>
+
+            <!-- Transport share segment -->
+            <circle class="donut-segment segment-trans" cx="21" cy="21" r="15.91549430918954" fill="transparent"
+              stroke="#f59e0b" stroke-width="4.5"
+              [attr.stroke-dasharray]="getCategoryShare('Transport') + ' ' + (100 - getCategoryShare('Transport'))"
+              [attr.stroke-dashoffset]="100 - (getCategoryShare('Software') + getCategoryShare('Food')) + 25">
+            </circle>
+          </svg>
+
+          <div class="donut-label">
+            <span class="val">{{ formatTotal() }}</span>
+            <span class="lbl">Total Burn</span>
+          </div>
+        </div>
+
+        <div class="donut-legend">
+          <div class="legend-item">
+            <span class="legend-color" style="background: #5b5fef;"></span>
+            <span class="legend-name">Software</span>
+            <strong class="legend-val">{{ getCategoryShare('Software') }}%</strong>
+          </div>
+          <div class="legend-item">
+            <span class="legend-color" style="background: #06b6d4;"></span>
+            <span class="legend-name">Food</span>
+            <strong class="legend-val">{{ getCategoryShare('Food') }}%</strong>
+          </div>
+          <div class="legend-item">
+            <span class="legend-color" style="background: #f59e0b;"></span>
+            <span class="legend-name">Transport</span>
+            <strong class="legend-val">{{ getCategoryShare('Transport') }}%</strong>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+
+    <!-- Real-time Filter & Search -->
+    <mat-card class="premium-card filter-card">
+      <div class="filter-header">
+        <h3><mat-icon style="color: #06b6d4;">search</mat-icon> Filter Ledger Entries</h3>
+        <span class="filter-badge">Instant Query</span>
+      </div>
+      <p>Narrow down corporate burns instantly by entering category tags, descriptions, or transaction sources.</p>
+      
+      <div class="search-input-wrapper">
+        <mat-form-field appearance="outline" class="premium-search-field">
+          <mat-label>Search expenses...</mat-label>
+          <input matInput [(ngModel)]="searchQuery" (input)="applyFilter()" placeholder="e.g. GitHub, transport, diner" />
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <div class="filter-status-alert">
+        <mat-icon style="color: #10b981;">insights</mat-icon>
+        <span>Displaying <strong>{{ filteredExpenses.length }}</strong> of <strong>{{ expenses.length }}</strong> records.</span>
+      </div>
+    </mat-card>
+  </div>
+
+  <!-- Glass Ledger List -->
+  <mat-card class="premium-card list-card">
+    <div class="list-title-row">
+      <h3><mat-icon style="color: #ef4444;">receipt</mat-icon> Auditable Ledger Rows</h3>
+      <span class="count-badge">PCI-DSS Secured</span>
+    </div>
+
+    <div class="expense-rows-container">
+      <div *ngIf="!filteredExpenses.length" class="empty-query-state">
+        <mat-icon class="empty-icon">search_off</mat-icon>
+        <h4>No match found</h4>
+        <p>Adjust your search queries or category tags to load recent expense items.</p>
+      </div>
+
+      <div class="expense-row glass-row animate-row" *ngFor="let item of filteredExpenses">
+        <div class="row-left">
+          <div class="category-icon-wrapper">
+            <mat-icon>{{ getCategoryIcon(item.category) }}</mat-icon>
+          </div>
+          <div class="row-details">
+            <h4 class="item-desc">{{ item.description }}</h4>
+            <div class="item-meta">
+              <span class="item-cat">{{ item.category }}</span>
+              <span class="divider">•</span>
+              <span class="item-date">{{ item.date }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row-right">
+          <span class="item-amount">-{{ formatAmount(item.amount) }}</span>
+          <span class="badge-cleared"><mat-icon>check_circle</mat-icon> Settled</span>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+</div>

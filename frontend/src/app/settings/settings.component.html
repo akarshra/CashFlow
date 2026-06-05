@@ -1,0 +1,251 @@
+<div class="settings-shell">
+  <!-- Alert Notification -->
+  <div class="custom-settings-alert" *ngIf="showAlert">
+    <div class="alert-content">
+      <mat-icon>info</mat-icon>
+      <span>{{ alertMessage }}</span>
+    </div>
+  </div>
+
+  <div class="settings-container">
+    <div class="settings-header">
+      <span class="eyebrow"><mat-icon style="font-size: 0.95rem; width: 15px; height: 15px; vertical-align: middle;">settings</mat-icon> System Settings</span>
+      <h1>CashFlow Mainframe Controls</h1>
+      <p>Configure interface options, map direct API credentials, and monitor database stubs resets in the secure sandbox cockpit.</p>
+    </div>
+
+    <!-- Core Grid -->
+    <div class="settings-grid">
+      <!-- Left Column: Preferences -->
+      <div class="settings-column">
+        <!-- Interface Config -->
+        <mat-card class="settings-glass-card pref-card">
+          <h3 class="card-title">
+            <mat-icon style="color: #5b5fef;">palette</mat-icon> General UI Preferences
+          </h3>
+          <p class="card-subtitle">Manage global visual templates and multi-currency formats applied across ledgers.</p>
+          
+          <div class="settings-form">
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="glass-form-field">
+                <mat-label>Theme Interface Mode</mat-label>
+                <mat-select [(ngModel)]="activeTheme">
+                  <mat-option value="classic">Classic Ocean Blue</mat-option>
+                  <mat-option value="dark">Sleek Obsidian Dark</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="glass-form-field">
+                <mat-label>Default Local Currency</mat-label>
+                <mat-select [(ngModel)]="activeCurrency">
+                  <mat-option value="INR">INR (₹)</mat-option>
+                  <mat-option value="USD">USD ($)</mat-option>
+                  <mat-option value="EUR">EUR (€)</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="form-row" style="margin-top: 0.5rem;">
+              <mat-form-field appearance="outline" class="glass-form-field full-width" style="grid-column: span 2; width: 100%;">
+                <mat-label>Financial Profile Persona</mat-label>
+                <mat-select [(ngModel)]="activePersona">
+                  <mat-option value="student">🎓 Academic / Student Budgeter</mat-option>
+                  <mat-option value="professional">💼 Working Professional / Job Holder</mat-option>
+                  <mat-option value="corporate">🏢 Corporate SaaS / Business Enterprise</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <button mat-raised-button class="glow-submit-btn" (click)="saveGeneral()">
+              <mat-icon>done_all</mat-icon> Update UI Parameters
+            </button>
+          </div>
+        </mat-card>
+
+        <!-- Notification Tuning -->
+        <mat-card class="settings-glass-card notify-card">
+          <h3 class="card-title">
+            <mat-icon style="color: #06b6d4;">notifications_active</mat-icon> Notification Alerts Hub
+          </h3>
+          <p class="card-subtitle">Tune budget overage warnings and real-time WebSocket socket transmissions.</p>
+          
+          <div class="notifications-list">
+            <div class="notify-row">
+              <div class="notify-info">
+                <div class="notify-title">Real-time Push Notifications</div>
+                <div class="notify-subtitle">Broadcasts live events on transaction swaps instantly.</div>
+              </div>
+              <mat-slide-toggle [(ngModel)]="pushEnabled" color="primary"></mat-slide-toggle>
+            </div>
+
+            <div class="notify-row">
+              <div class="notify-info">
+                <div class="notify-title">Slack Sync Channels</div>
+                <div class="notify-subtitle">Redirect system alerts to collaborative Slack workspaces.</div>
+              </div>
+              <mat-slide-toggle [(ngModel)]="slackSync" color="primary"></mat-slide-toggle>
+            </div>
+
+            <div class="notify-row">
+              <div class="notify-info">
+                <div class="notify-title">Monthly Audit Email Digest</div>
+                <div class="notify-subtitle">Sends consolidated PDF financial reports automatically.</div>
+              </div>
+              <mat-slide-toggle [(ngModel)]="digestEnabled" color="primary"></mat-slide-toggle>
+            </div>
+
+            <div class="notify-row scale-row">
+              <div class="notify-info">
+                <div class="notify-title">Budget Warning Threshold</div>
+                <div class="notify-subtitle">Alert challenge triggers once spending reaches <strong>{{ warningThreshold }}%</strong>.</div>
+              </div>
+              <input type="range" min="50" max="100" class="neon-slider" [(ngModel)]="warningThreshold" />
+            </div>
+          </div>
+        </mat-card>
+
+        <!-- Webhook Alerting Configurations -->
+        <mat-card class="settings-glass-card webhook-settings-card" style="margin-top: 1.5rem;">
+          <h3 class="card-title">
+            <mat-icon style="color: #10b981;">rss_feed</mat-icon> Webhook & Alert Channels
+          </h3>
+          <p class="card-subtitle">Hook up Slack/Telegram channels to receive automated real-time AWS & Plaid sync alerts.</p>
+
+          <div class="settings-form" style="margin-top: 1.25rem; display: flex; flex-direction: column; gap: 1rem;">
+            <div style="display: flex; gap: 1rem;">
+              <mat-form-field appearance="outline" class="glass-form-field" style="flex: 1; width: 100%;">
+                <mat-label>Webhook Channel Platform</mat-label>
+                <mat-select [(ngModel)]="webhookPlatform">
+                  <mat-option value="Slack">Slack Workspace</mat-option>
+                  <mat-option value="Telegram">Telegram Channel</mat-option>
+                  <mat-option value="Discord">Discord Server</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <mat-form-field appearance="outline" class="glass-form-field full-width" style="width: 100%;">
+              <mat-label>Webhook Destination URL</mat-label>
+              <input matInput [(ngModel)]="webhookUrl" placeholder="https://hooks.slack.com/services/..." />
+            </mat-form-field>
+
+            <div class="triggers-list" style="display: flex; flex-direction: column; gap: 8px;">
+              <span style="font-size: 0.8rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.04em;">Alert Event Triggers</span>
+
+              <div class="notify-row" style="padding: 4px 0; border-bottom: 1px solid rgba(15, 23, 42, 0.04); display: flex; justify-content: space-between; align-items: center;">
+                <div class="notify-info">
+                  <div class="notify-title" style="font-size: 0.88rem; font-weight: 700; color: #0f172a;">AWS Duplicate Spikes</div>
+                  <div class="notify-subtitle" style="font-size: 0.72rem; color: #64748b;">Alerts on immediate budget transaction anomalies.</div>
+                </div>
+                <mat-slide-toggle [(ngModel)]="webhookTriggers.duplicateSpikes" color="primary"></mat-slide-toggle>
+              </div>
+
+              <div class="notify-row" style="padding: 4px 0; border-bottom: 1px solid rgba(15, 23, 42, 0.04); display: flex; justify-content: space-between; align-items: center;">
+                <div class="notify-info">
+                  <div class="notify-title" style="font-size: 0.88rem; font-weight: 700; color: #0f172a;">Budget Limit Exceeded</div>
+                  <div class="notify-subtitle" style="font-size: 0.72rem; color: #64748b;">Dispatches when card limit drops below warning rates.</div>
+                </div>
+                <mat-slide-toggle [(ngModel)]="webhookTriggers.budgetExceeded" color="primary"></mat-slide-toggle>
+              </div>
+
+              <div class="notify-row" style="padding: 4px 0; display: flex; justify-content: space-between; align-items: center;">
+                <div class="notify-info">
+                  <div class="notify-title" style="font-size: 0.88rem; font-weight: 700; color: #0f172a;">Live OCR Auto-Reconciled</div>
+                  <div class="notify-subtitle" style="font-size: 0.72rem; color: #64748b;">Triggers after receipts successfully merge.</div>
+                </div>
+                <mat-slide-toggle [(ngModel)]="webhookTriggers.newReconciliation" color="primary"></mat-slide-toggle>
+              </div>
+            </div>
+
+            <button mat-raised-button class="glow-submit-btn" style="background: rgba(16, 185, 129, 0.08) !important; border-color: rgba(16, 185, 129, 0.2) !important; color: #10b981 !important; width: 100%; border: 1.5px solid; padding: 10px 0; border-radius: 12px; font-weight: 800; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px;" (click)="testWebhookAlertPayload()" [disabled]="testingWebhook">
+              <mat-icon *ngIf="!testingWebhook" style="font-size: 1.2rem; width: 18px; height: 18px;">sensors</mat-icon>
+              <mat-icon *ngIf="testingWebhook" class="spinning" style="font-size: 1.2rem; width: 18px; height: 18px;">sync</mat-icon>
+              <span>{{ testingWebhook ? 'Broadcasting test payload...' : 'Dispatch Test Alert Payload' }}</span>
+            </button>
+          </div>
+        </mat-card>
+      </div>
+
+      <!-- Right Column: API Keys & Resets -->
+      <div class="settings-column">
+        <!-- API Credentials Hub -->
+        <mat-card class="settings-glass-card api-card">
+          <h3 class="card-title">
+            <mat-icon style="color: #7c3aed;">vpn_key</mat-icon> High-Compute Credentials Vault
+          </h3>
+          <p class="card-subtitle">Hook up direct live developer keys to verify true bank statements and Stripe transactions.</p>
+          
+          <div class="settings-form">
+            <mat-form-field appearance="outline" class="glass-form-field full-width">
+              <mat-label>Plaid Client ID</mat-label>
+              <input matInput [(ngModel)]="plaidClientId" placeholder="6a19801..." />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="glass-form-field full-width">
+              <mat-label>Plaid Secret Cipher</mat-label>
+              <input matInput type="password" [(ngModel)]="plaidSecret" placeholder="••••••••••••••" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="glass-form-field full-width">
+              <mat-label>Stripe Publishable Key</mat-label>
+              <input matInput [(ngModel)]="stripeSecretKey" placeholder="pk_test_..." />
+            </mat-form-field>
+
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="glass-form-field">
+                <mat-label>Gmail SMTP Server</mat-label>
+                <input matInput [(ngModel)]="smtpHost" />
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="glass-form-field">
+                <mat-label>SMTP Dispatch Port</mat-label>
+                <input matInput type="number" [(ngModel)]="smtpPort" />
+              </mat-form-field>
+            </div>
+
+            <button mat-raised-button class="glow-submit-btn cred-btn" (click)="saveCredentials()">
+              <mat-icon>security</mat-icon> Secure Vault Credentials
+            </button>
+          </div>
+        </mat-card>
+
+        <!-- Biometric WebAuthn Cockpit -->
+        <mat-card class="settings-glass-card bio-card">
+          <h3 class="card-title" style="color: #5b5fef;">
+            <mat-icon style="color: #5b5fef;">fingerprint</mat-icon> FIDO2 Biometric Security
+          </h3>
+          <p class="card-subtitle">Register FaceID, TouchID, or physical security keys to verify high-risk console resets passwordlessly.</p>
+          
+          <div class="settings-form">
+            <div class="notify-row" style="background: rgba(91, 95, 239, 0.04); border-color: rgba(91, 95, 239, 0.08); margin-bottom: 1rem;">
+              <div class="notify-info">
+                <div class="notify-title" style="color: #102a43;">Authenticator State</div>
+                <div class="notify-subtitle">{{ isBioRegistered ? '✔ TouchID / Security Key active' : 'No biometric credential registered' }}</div>
+              </div>
+              <mat-icon style="font-size: 2.2rem; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;" [style.color]="isBioRegistered ? '#10b981' : '#cbd5e1'">{{ isBioRegistered ? 'verified' : 'gpp_maybe' }}</mat-icon>
+            </div>
+
+            <button mat-raised-button class="glow-submit-btn" style="background: linear-gradient(135deg, #5b5fef 0%, #7c3aed 100%) !important; box-shadow: 0 4px 15px rgba(91, 95, 239, 0.2) !important; margin-top: 0;" (click)="registerBiometrics()">
+              <mat-icon>fingerprint</mat-icon> {{ isBioRegistered ? 'Re-Enroll Biometric Key' : 'Enroll Biometric TouchID' }}
+            </button>
+          </div>
+        </mat-card>
+
+        <!-- Danger Zone -->
+        <mat-card class="settings-glass-card danger-card">
+          <h3 class="card-title text-red">
+            <mat-icon style="color: #ef4444;">error_outline</mat-icon> Mainframe Administrative Actions
+          </h3>
+          <p class="card-subtitle text-red-sub">High-risk sandbox database resets. Actions completed here are immutable.</p>
+          
+          <div class="danger-panel">
+            <p class="danger-copy">Flushing relational local schemas deletes all active budgets, expenses, collaborative workspaces, and returns parameters to seed default states.</p>
+            <button mat-raised-button class="danger-btn" (click)="resetDatabase()" [disabled]="isResetting">
+              <mat-icon *ngIf="!isResetting">restart_alt</mat-icon>
+              <mat-icon *ngIf="isResetting" class="spinning">sync</mat-icon>
+              <span>{{ isResetting ? 'Resetting Database...' : 'Flush & Re-Seed Mainframe' }}</span>
+            </button>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

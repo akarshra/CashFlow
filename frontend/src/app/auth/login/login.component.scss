@@ -1,0 +1,90 @@
+.auth-shell {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin: 80px auto;
+  padding: 0 16px;
+  max-width: 1080px;
+}
+.auth-card {
+  width: min(100%, 420px);
+  padding: 28px;
+  background: rgba(255, 255, 255, 0.98);
+  color: #0f172a;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 28px;
+  box-shadow: 0 24px 80px rgba(15, 23, 42, 0.08);
+  animation: fadeInUp 0.6s ease both;
+}
+.login-card {
+  max-width: 520px;
+}
+.new-user-card {
+  background: rgba(236, 244, 255, 0.96);
+}
+.card-head h1,
+.card-head h2 {
+  margin: 0 0 10px;
+  font-size: 2rem;
+  line-height: 1.1;
+}
+.card-head p {
+  margin: 0 0 24px;
+  color: #475569;
+  font-size: 0.96rem;
+  line-height: 1.6;
+}
+.full-width {
+  width: 100%;
+}
+.action-button {
+  width: 100%;
+  margin-top: 18px;
+  height: 48px !important;
+  font-weight: 700 !important;
+  font-size: 1rem !important;
+  border-radius: 14px !important;
+  letter-spacing: 0.02em !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.login-card .action-button {
+  background: #0d9488 !important;
+  color: #ffffff !important;
+  box-shadow: 0 6px 18px rgba(13, 148, 136, 0.25) !important;
+  border: none !important;
+}
+.login-card .action-button:hover {
+  background: #0f766e !important;
+  box-shadow: 0 10px 24px rgba(13, 148, 136, 0.35) !important;
+  transform: translateY(-2px) !important;
+}
+.new-user-card .action-button {
+  background: rgba(255, 255, 255, 0.7) !important;
+  border: 1.5px solid rgba(13, 148, 136, 0.3) !important;
+  color: #0d9488 !important;
+  backdrop-filter: blur(8px) !important;
+}
+.new-user-card .action-button:hover {
+  background: rgba(13, 148, 136, 0.06) !important;
+  border-color: rgba(13, 148, 136, 0.5) !important;
+  color: #0f766e !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 18px rgba(13, 148, 136, 0.1) !important;
+}
+.mat-form-field .mat-form-field-label {
+  color: rgba(15, 23, 42, 0.7) !important;
+}
+.mat-form-field .mat-input-element {
+  color: #0f172a !important;
+}
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

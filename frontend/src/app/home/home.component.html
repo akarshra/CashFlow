@@ -1,0 +1,81 @@
+<div class="landing-page dark-fintech-theme">
+  <!-- Glowing neon backdrops -->
+  <div class="radial-glow glow-primary"></div>
+  <div class="radial-glow glow-secondary"></div>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-copy">
+      <span class="eyebrow"><mat-icon>security</mat-icon> CashFlow</span>
+      <h1 class="hero-title">Navigate your startup's financial future with complete clarity.</h1>
+      <p class="hero-subtitle">CashFlow consolidates your budgets, expenses, income statements, and savings goals into one unified, glassmorphic visual ledger. Elevate your financial control and make audit-ready decisions instantly.</p>
+      
+      <div class="hero-actions">
+        <a mat-raised-button class="cta-btn-primary" routerLink="/login">Enterprise Login</a>
+        <a mat-stroked-button class="cta-btn-secondary" routerLink="/roadmap"><mat-icon>insights</mat-icon> Open Runway Simulator</a>
+      </div>
+    </div>
+
+    <!-- Right Side 3D floating info panel with real-time WebGL behind it -->
+    <div class="hero-right-visual">
+      <div #threeHomeContainer class="three-home-canvas"></div>
+    </div>
+  </section>
+
+  <!-- Interactive Planner Callout Card -->
+  <section class="planner-callout-section">
+    <mat-card class="planner-banner-card" (mousemove)="onCardMove($event, $any($event.currentTarget))" (mouseleave)="onCardLeave($any($event.currentTarget))">
+      <div class="banner-text">
+        <span class="eyebrow-accent">New Release</span>
+        <h2>Interactive Startup Wealth & Runway Planner</h2>
+        <p>Before registering, experiment with our active runway projections! Model custom growth margins, evaluate burn rates, and chart cash balances across multiple years.</p>
+      </div>
+      <a mat-raised-button class="banner-btn" routerLink="/roadmap"><mat-icon>play_circle_filled</mat-icon> Start Free Simulator</a>
+    </mat-card>
+  </section>
+
+  <!-- Core Features Section -->
+  <section class="features-section">
+    <div class="section-header">
+      <span class="section-label">Enterprise Capabilities</span>
+      <h2>Engineered for modern high-growth teams.</h2>
+    </div>
+    
+    <div class="features-grid">
+      <mat-card class="feature-card-glass" (mousemove)="onCardMove($event, $any($event.currentTarget))" (mouseleave)="onCardLeave($any($event.currentTarget))">
+        <mat-icon class="icon-glow-indigo">dashboard_customize</mat-icon>
+        <h3>Obsidian Visual Dashboards</h3>
+        <p>Leverage Apache ECharts and dynamic Chart.js models to render real-time asset distributions.</p>
+      </mat-card>
+
+      <mat-card class="feature-card-glass" (mousemove)="onCardMove($event, $any($event.currentTarget))" (mouseleave)="onCardLeave($any($event.currentTarget))">
+        <mat-icon class="icon-glow-emerald">center_focus_weak</mat-icon>
+        <h3>AI Document OCR</h3>
+        <p>Extract merchants, line categories, and tax brackets using true multimodal Gemini Vision integrations.</p>
+      </mat-card>
+
+      <mat-card class="feature-card-glass" (mousemove)="onCardMove($event, $any($event.currentTarget))" (mouseleave)="onCardLeave($any($event.currentTarget))">
+        <mat-icon class="icon-glow-amber">donut_large</mat-icon>
+        <h3>Shared Workspace Budgets</h3>
+        <p>Establish unified budgets with automated spending threshold notifications via WebSockets.</p>
+      </mat-card>
+
+      <mat-card class="feature-card-glass" (mousemove)="onCardMove($event, $any($event.currentTarget))" (mouseleave)="onCardLeave($any($event.currentTarget))">
+        <mat-icon class="icon-glow-purple">credit_card</mat-icon>
+        <h3>Stripe Payment Core</h3>
+        <p>Upgrade to unlimited teams, premium forecasting, and custom PDF invoices on checkout.</p>
+      </mat-card>
+    </div>
+  </section>
+
+  <!-- Bottom CTA -->
+  <section class="cta-bottom-glass" (mousemove)="onCardMove($event, $any($event.currentTarget))" (mouseleave)="onCardLeave($any($event.currentTarget))">
+    <div class="cta-text">
+      <h2>Unlock your workspace today.</h2>
+      <p>Sign in to configure Plaid bank syncs, invite collaborators, and let Gemini construct your monthly financial roadmap.</p>
+    </div>
+    <div class="cta-actions-row">
+      <a mat-raised-button class="cta-btn-primary" routerLink="/register">Register Free Account</a>
+    </div>
+  </section>
+</div>

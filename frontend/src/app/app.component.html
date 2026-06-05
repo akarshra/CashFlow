@@ -1,0 +1,16 @@
+<div class="global-background"></div>
+<div class="layout-shell">
+  <div class="page-shell">
+    
+    <!-- Unified Premium SaaS Global Navbar -->
+    <app-navbar></app-navbar>
+
+    <!-- Main Workspace Content Node -->
+    <div class="page-content">
+      <router-outlet></router-outlet>
+      <app-footer></app-footer>
+    </div>
+
+    <app-ai-chat *ngIf="isLoggedIn && !hideNavigation"></app-ai-chat>
+  </div>
+</div>

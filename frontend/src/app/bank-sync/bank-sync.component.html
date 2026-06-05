@@ -1,0 +1,114 @@
+<div class="module-container bank-sync-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <h2><mat-icon class="cyan-icon">account_balance</mat-icon> Institutional Bank Synchronization</h2>
+    <p>Link commercial checking accounts via Plaid OAuth to ingest leading ledger statements automatically.</p>
+  </div>
+
+  <!-- Multi-step Timeline -->
+  <div class="sync-timeline">
+    <div class="step" [class.active]="loading || accountConnected">
+      <div class="step-num">1</div>
+      <span>Link Token Request</span>
+    </div>
+    <div class="step-line" [class.active]="loading || accountConnected"></div>
+    <div class="step" [class.active]="accountConnected">
+      <div class="step-num">2</div>
+      <span>OAuth Handshake</span>
+    </div>
+    <div class="step-line" [class.active]="accountConnected"></div>
+    <div class="step" [class.active]="accountConnected && transactions.length > 0">
+      <div class="step-num">3</div>
+      <span>Active Synchronized Ledger</span>
+    </div>
+  </div>
+
+  <!-- Dashboard Split -->
+  <div class="sync-grid-split">
+    <!-- Sync Controller Panel -->
+    <mat-card class="premium-card controller-card">
+      <div class="card-title-row">
+        <h3><mat-icon style="color: #06b6d4;">sensors</mat-icon> Link Financial Institutions</h3>
+        <span class="badge">AES-256 Encrypted</span>
+      </div>
+      <p>Authorize CashFlow secure read-only clearance limits to compile and match checking statements.</p>
+
+      <button mat-raised-button class="premium-action-btn" (click)="connectBank()" [disabled]="loading">
+        <mat-icon>{{ accountConnected ? 'sync' : 'sensors_active' }}</mat-icon>
+        {{ accountConnected ? 'Re-align Synchronized Accounts' : 'Connect Account with Plaid' }}
+      </button>
+
+      <!-- Connected Metallic Card display -->
+      <div class="metallic-card-deck" *ngIf="accountConnected">
+        <div class="metallic-card svb-card">
+          <div class="metallic-decor"></div>
+          <div class="card-top">
+            <span class="bank-name">SVB Reserve</span>
+            <mat-icon>contactless</mat-icon>
+          </div>
+          <div class="card-middle">
+            <span class="chip-logo"></span>
+            <span class="card-num">•••• •••• •••• 9840</span>
+          </div>
+          <div class="card-bottom">
+            <div>
+              <span>HOLDER</span>
+              <strong>CASHFLOW ENT</strong>
+            </div>
+            <div>
+              <span>STATUS</span>
+              <strong class="active-lbl">CONNECTED</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+
+    <!-- Logger Terminal console window -->
+    <mat-card class="premium-card terminal-card">
+      <div class="card-title-row">
+        <h3><mat-icon style="color: #5b5fef;">terminal</mat-icon> Plaid API Connection Console</h3>
+        <span class="badge console">Live Logs</span>
+      </div>
+      
+      <div class="terminal-body">
+        <div class="terminal-line" *ngFor="let log of syncLogs">
+          {{ log }}
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
+  <!-- Synced transaction tables -->
+  <mat-card class="premium-card ledger-table-card" *ngIf="accountConnected && transactions.length > 0">
+    <div class="card-title-row">
+      <h3><mat-icon style="color: #10b981;">history</mat-icon> Synced Checking Ledgers</h3>
+      <span class="badge count">{{ transactions.length }} Ingested Rows</span>
+    </div>
+
+    <div class="table-shell">
+      <table class="premium-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Amount (INR)</th>
+            <th>Match Match</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of transactions">
+            <td>{{ item.transactionDate }}</td>
+            <td class="bold-desc">{{ item.description }}</td>
+            <td><span class="cat-pill">{{ item.category || 'Uncategorized' }}</span></td>
+            <td [class.negative]="item.amount < 0" [class.positive]="item.amount >= 0">
+              {{ item.amount >= 0 ? '+' : '' }}{{ item.amount | currency:'INR':'symbol':'1.2-2' }}
+            </td>
+            <td><span class="match-badge"><mat-icon>verified</mat-icon> Auto-match</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </mat-card>
+</div>

@@ -1,0 +1,72 @@
+<div class="document-page">
+  <div class="radial-glow glow-primary"></div>
+  <div class="radial-glow glow-secondary"></div>
+
+  <header class="document-header-bar">
+    <a routerLink="/home" class="back-home-btn">
+      <mat-icon>arrow_back</mat-icon> Back to CashFlow Home
+    </a>
+  </header>
+
+  <section class="document-header">
+    <span class="eyebrow"><mat-icon>rule</mat-icon> Platform Guidelines</span>
+    <h1 class="document-title">Terms of Service</h1>
+    <p class="document-subtitle">Last updated: June 1, 2026. Read the compliance rules, usage boundaries, and ledger requirements of CashFlow.</p>
+  </section>
+
+  <!-- Document layout -->
+  <div class="document-container">
+    <!-- Left Navigation Sidebar -->
+    <mat-card class="document-sidebar">
+      <h3>Outline</h3>
+      <ul class="outline-links">
+        <li><button (click)="scrollToSection('sec-terms')">1. Acceptance of Terms</button></li>
+        <li><button (click)="scrollToSection('sec-accounts')">2. Account Registration</button></li>
+        <li><button (click)="scrollToSection('sec-plaid')">3. Bank Sync Integrations</button></li>
+        <li><button (click)="scrollToSection('sec-conduct')">4. Prohibited Conduct</button></li>
+        <li><button (click)="scrollToSection('sec-liability')">5. Limitation of Liability</button></li>
+      </ul>
+    </mat-card>
+
+    <!-- Right Reading Pane -->
+    <mat-card class="document-content-pane" (mousemove)="onCardMove($event, $any($event.currentTarget))">
+      <div id="sec-terms" class="doc-section">
+        <h2>1. Acceptance of Terms</h2>
+        <p>By registering a collaborative workspace, inviting team members, or connecting Checking ledger stubs via Plaid, you agree to comply with and be bound by these Terms of Service. If you do not authorize all terms, you are prohibited from utilizing the enterprise dashboards or triggering simulated forecast calculations.</p>
+      </div>
+
+      <hr class="separator">
+
+      <div id="sec-accounts" class="doc-section">
+        <h2>2. Account Registration</h2>
+        <p>Workspace administrators are solely responsible for ensuring the accuracy and validity of emails registered within their accounts:</p>
+        <ul>
+          <li><strong>Credentials Accuracy:</strong> You agree to provide real, active email coordinates during registration.</li>
+          <li><strong>Workspace Security:</strong> You are responsible for safeguarding your JWT token configurations and session passwords.</li>
+          <li><strong>Authorized Access:</strong> You agree not to distribute administrative credentials to unauthorized external vendors.</li>
+        </ul>
+      </div>
+
+      <hr class="separator">
+
+      <div id="sec-plaid" class="doc-section">
+        <h2>3. Bank Sync Integrations</h2>
+        <p>By executing Plaid credentials connections, you authorize CashFlow to request standard ledger stubs, balance summaries, and merchant categories from your bank institutions. All balance synchronizations are executed securely using standard client stubs, and we do not store, query, or authorize primary checking logins.</p>
+      </div>
+
+      <hr class="separator">
+
+      <div id="sec-conduct" class="doc-section">
+        <h2>4. Prohibited Conduct</h2>
+        <p>You agree not to bypass workspace boundaries, inject false database entries, or execute malicious load routines against the SockJS WebSockets broker. Any structural tampering with payment checkout endpoints instantly voids premium status flags.</p>
+      </div>
+
+      <hr class="separator">
+
+      <div id="sec-liability" class="doc-section">
+        <h2>5. Limitation of Liability</h2>
+        <p>IN NO EVENT SHALL CASHFLOW OR ITS DEVELOPERS BE LIABLE FOR ANY DIRECT, INDIRECT, OR INCIDENTAL LOSSES ARISING FROM INCORRECT GEMINI OCR PARSING OR UNSYNCHRONIZED CASH RUNWAY SIMULATIONS. ALWAYS CROSS-REFERENCE AI-EXTRACTED RAW DATA BEFORE ANNOUNCING COMPLIANCE AUDITS.</p>
+      </div>
+    </mat-card>
+  </div>
+</div>

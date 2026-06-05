@@ -1,0 +1,388 @@
+<input type="file" #receiptInput style="display: none;" (change)="onReceiptFileSelected($event)" accept="image/*,application/pdf" />
+
+<!-- Global System Announcement Banner -->
+<div class="global-system-banner violet-glow" *ngIf="systemAnnouncement" style="margin-bottom: 1.5rem; background: rgba(255, 255, 255, 0.45); border: 1.5px solid rgba(124, 58, 237, 0.3); box-shadow: 0 10px 30px rgba(124, 58, 237, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.5) inset; backdrop-filter: blur(24px); border-radius: 20px; padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; animation: fadeIn 0.4s ease;">
+  <div style="display: flex; align-items: center; gap: 12px; color: #7c3aed;">
+    <mat-icon style="font-size: 1.8rem; width: 28px; height: 28px;">campaign</mat-icon>
+    <div style="display: flex; flex-direction: column;">
+      <span style="font-size: 0.72rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; color: #7c3aed;">SYSTEM ANNOUNCEMENT</span>
+      <span style="font-size: 0.95rem; font-weight: 700; color: #1e293b; line-height: 1.3;">{{ systemAnnouncement }}</span>
+    </div>
+  </div>
+  <button (click)="dismissAnnouncement()" style="background: transparent; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #64748b; padding: 4px; border-radius: 50%; transition: all 0.2s;" onmouseover="this.style.background='rgba(124, 58, 237, 0.08)'; this.style.color='#7c3aed'" onmouseout="this.style.background='transparent'; this.style.color='#64748b'">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<!-- Dashboard Header Section -->
+<div class="dashboard-banner-container">
+  <div class="banner-glass-shield">
+    <div class="banner-greeting">
+      <div class="persona-icon-ring">
+        <mat-icon *ngIf="activePersona === 'student'">school</mat-icon>
+        <mat-icon *ngIf="activePersona === 'professional'">work</mat-icon>
+        <mat-icon *ngIf="activePersona === 'corporate'">business</mat-icon>
+      </div>
+      <div>
+        <span class="banner-eyebrow">COMMAND CENTER &bull; {{ activePersona | uppercase }} PORTAL</span>
+        <h1>Welcome back, {{ currentUser.split('@')[0] || 'Akarsh' }}!</h1>
+        <p>Your financial runway is active. Let's optimize capital allocations, track live syncing API channels, and detect duplicate alerts.</p>
+      </div>
+    </div>
+    <div class="banner-quick-kpi">
+      <div class="quick-kpi-card">
+        <span class="label">consolidated net worth</span>
+        <strong class="value text-glow-teal">{{ formatCurrency(walletBalance + netSavingsValue) }}</strong>
+      </div>
+      <div class="quick-kpi-card">
+        <span class="label">active persona</span>
+        <span class="badge-persona" [class.student]="activePersona === 'student'" [class.professional]="activePersona === 'professional'" [class.corporate]="activePersona === 'corporate'">
+          {{ activePersona | uppercase }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Workspace Control & Status Toolbar -->
+<div class="workspace-toolbar-card">
+  <div class="toolbar-left">
+    <!-- Legal Entity dropdown -->
+    <div class="dropdown-wrapper">
+      <label>Consolidated Entity</label>
+      <mat-select [ngModel]="selectedEntity" (ngModelChange)="onEntityChange($event)" class="glass-select">
+        <mat-option *ngFor="let ent of entities" [value]="ent">
+          {{ ent }}
+        </mat-option>
+      </mat-select>
+    </div>
+
+    <!-- Currency dropdown -->
+    <div class="dropdown-wrapper">
+      <label>Consolidation Currency</label>
+      <mat-select [ngModel]="selectedCurrency.code" (ngModelChange)="onCurrencyChange($event)" class="glass-select-compact">
+        <mat-option *ngFor="let cur of currencies" [value]="cur.code">
+          {{ cur.symbol }} {{ cur.code }}
+        </mat-option>
+      </mat-select>
+    </div>
+  </div>
+
+  <div class="toolbar-right">
+    <!-- Websocket presence status badge -->
+    <div class="presence-badge-wrapper animate-pulse">
+      <span class="presence-dot"></span>
+      <span class="presence-text">WebSocket Live</span>
+    </div>
+
+    <button mat-raised-button class="ocr-btn" (click)="uploadReceipt()" *ngIf="ocrScannerEnabled">
+      <mat-icon>cloud_upload</mat-icon> OCR Upload
+    </button>
+  </div>
+</div>
+
+<!-- KPI Metrics Overview Grid -->
+<div class="overview-row" style="margin-bottom: 2rem;">
+  <app-overview-card [title]="incomeTitle" [amount]="formatCurrency(totalIncome)" [subtitle]="incomeSubtitle" class="kpi-glass-card"></app-overview-card>
+  <app-overview-card [title]="spendingTitle" [amount]="formatCurrency(totalSpending)" [subtitle]="spendingSubtitle" class="kpi-glass-card"></app-overview-card>
+  <app-overview-card [title]="savingsTitle" [amount]="formatCurrency(netSavingsValue)" [subtitle]="savingsSubtitle" class="kpi-glass-card"></app-overview-card>
+  <app-overview-card title="Growth Factor" [amount]="incomeGrowth" subtitle="MoM revenue trajectory" class="kpi-glass-card"></app-overview-card>
+</div>
+
+<mat-card class="widget-card tax-summary-card">
+  <div class="card-title">
+    <mat-icon class="title-icon amber-glow">receipt_long</mat-icon>
+    <span>Tax & Compliance Snapshot</span>
+  </div>
+  <p class="copy">Auto-estimated tax exposure, deduction opportunities, and PWA readiness for client-facing offline reports.</p>
+  <div class="tax-summary-grid">
+    <div>
+      <strong>{{ formatCurrency(estimatedTaxLiability) }}</strong>
+      <span>Projected annual tax</span>
+    </div>
+    <div>
+      <strong>{{ formatCurrency(taxableIncome) }}</strong>
+      <span>Taxable income</span>
+    </div>
+    <div>
+      <strong>{{ formatCurrency(taxSavingsOpportunity) }}</strong>
+      <span>Potential deduction buffer</span>
+    </div>
+  </div>
+  <div class="tax-actions-row">
+    <button mat-raised-button color="primary" (click)="downloadTaxReport()">Download tax report</button>
+    <button mat-stroked-button *ngIf="hasPwaSupport && showInstallPrompt" (click)="promptInstall()">Install App</button>
+    <span class="offline-note" *ngIf="isOffline">Offline mode detected — ledger still accessible in cached mode.</span>
+  </div>
+</mat-card>
+
+<!-- Main Two-Column Content Grid -->
+<div class="dashboard-grid">
+  
+  <!-- LEFT COLUMN: Main Visual Analytics & Interactive Ledgers -->
+  <div class="grid-column">
+    
+    <!-- Multi-Wallet Selection Nodes -->
+    <mat-card class="widget-card wallets-panel">
+      <div class="card-title">
+        <mat-icon class="title-icon teal-glow">account_balance_wallet</mat-icon>
+        <span>Interactive Capital Nodes</span>
+      </div>
+      <p class="copy">Select a wallet node to inspect balances, set allocation weightings, and verify active banking connection health indexes.</p>
+      
+      <div class="wallets-grid">
+        <div *ngFor="let wallet of wallets" class="wallet-node-box" [class.active]="wallet.name === activeWallet" (click)="selectWallet(wallet.name)">
+          <div class="node-header">
+            <mat-icon [style.color]="wallet.color">{{ wallet.icon }}</mat-icon>
+            <span class="active-indicator" *ngIf="wallet.name === activeWallet"></span>
+          </div>
+          <div class="node-body">
+            <span class="node-name">{{ wallet.name }}</span>
+            <strong class="node-balance">{{ formatCurrency(wallet.balance) }}</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="wallet-footer-progress">
+        <div class="progress-details">
+          <span>Capital Runway Health Index</span>
+          <strong>{{ walletHealth }}%</strong>
+        </div>
+        <div class="glass-progress-bar">
+          <span [style.width.%]="walletHealth"></span>
+        </div>
+      </div>
+    </mat-card>
+
+    <!-- Visual Charts Panel -->
+    <div class="charts-double-deck">
+      <mat-card class="widget-card chart-glass-card">
+        <div class="card-title">
+          <mat-icon class="title-icon cyan-glow">pie_chart</mat-icon>
+          <span>Allocation Breakdown</span>
+        </div>
+        <div class="canvas-container">
+          <canvas #incomeExpenseChart></canvas>
+        </div>
+      </mat-card>
+
+      <mat-card class="widget-card chart-glass-card">
+        <div class="card-title">
+          <mat-icon class="title-icon indigo-glow">trending_up</mat-icon>
+          <span>Compounding Curve</span>
+        </div>
+        <div class="canvas-container">
+          <canvas #spendingTrendChart></canvas>
+        </div>
+      </mat-card>
+    </div>
+
+    <!-- AI Audit Anomaly Ledger -->
+    <mat-card class="widget-card audit-anomalies-card" *ngIf="aiAdvisorEnabled">
+      <div class="card-title">
+        <mat-icon class="title-icon warning-glow">security_update_warning</mat-icon>
+        <span>AI Smart-Audit anomalies</span>
+        <button class="icon-sync-btn" (click)="loadAuditAlerts()" matTooltip="Sync anomalies list">
+          <mat-icon>sync</mat-icon>
+        </button>
+      </div>
+      <p class="copy">Autonomous audit algorithms constantly scanning for transaction duplicates, overlapping subscription profiles, and billing mismatches.</p>
+      
+      <div class="audit-alerts-list">
+        <div *ngIf="auditAlerts.length === 0" class="empty-alerts">
+          <mat-icon>check_circle</mat-icon>
+          <span>All transaction records are audit-secure. No anomalies detected.</span>
+        </div>
+        
+        <div *ngFor="let alert of auditAlerts" class="audit-alert-row" [class.high]="alert.severity === 'high'" [class.medium]="alert.severity === 'medium'">
+          <div class="alert-left">
+            <span class="severity-dot"></span>
+            <div>
+              <strong class="alert-title">{{ alert.title }}</strong>
+              <p class="alert-desc">{{ alert.description }}</p>
+            </div>
+          </div>
+          <button *ngIf="alert.actionable === 'true'" class="optimize-btn" (click)="triggerAuditAction(alert)">
+            Resolve
+          </button>
+        </div>
+      </div>
+    </mat-card>
+
+  </div>
+
+  <!-- RIGHT COLUMN: Webhook Console Cockpit & Real-time Feeds -->
+  <div class="grid-column">
+    
+    <!-- Stripe & Plaid Webhook Dev console -->
+    <mat-card class="widget-card terminal-cockpit-card">
+      <div class="terminal-header">
+        <div class="terminal-dots">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+        </div>
+        <span class="terminal-title">API Sandbox Webhook Cockpit</span>
+      </div>
+      
+      <div class="terminal-body">
+        <div class="terminal-info-pane">
+          <span class="prefix">system&#64;cashflow:~$</span>
+          <p>Deploy simulated webhooks to test instant STOMP WebSocket synchronization. Payloads compile, write to database nodes, and broadcast dynamically.</p>
+        </div>
+
+        <div class="terminal-controls-deck">
+          <!-- Plaid Swipe Simulation -->
+          <div class="terminal-sub-panel" *ngIf="bankSyncEnabled">
+            <div class="sub-panel-title">
+              <mat-icon>sync_alt</mat-icon> PLAID TRANSACTION SWIPE SIMULATOR
+            </div>
+            <div class="input-inline-row">
+              <input type="text" placeholder="Description" [(ngModel)]="plaidDesc" class="terminal-input" />
+              <input type="number" placeholder="Amount" [(ngModel)]="plaidAmount" class="terminal-input-compact" />
+            </div>
+            <button mat-raised-button class="terminal-action-btn plaid" (click)="simulatePlaidWebhookAction()" [disabled]="simulatingPlaid">
+              <mat-icon *ngIf="!simulatingPlaid">bolt</mat-icon>
+              <span>{{ simulatingPlaid ? 'Broadcasting...' : 'Deliver Webhook' }}</span>
+            </button>
+          </div>
+
+          <!-- Stripe Checkout Simulation -->
+          <div class="terminal-sub-panel">
+            <div class="sub-panel-title">
+              <mat-icon>workspace_premium</mat-icon> STRIPE CHECKOUT UPGRADE SIMULATOR
+            </div>
+            <p class="terminal-copy">Triggers a simulated Stripe upgrade event for <strong>{{ currentUser || 'Akarsh' }}</strong> to flag account membership in memory.</p>
+            <button mat-raised-button class="terminal-action-btn stripe" (click)="simulateStripeWebhookAction()" [disabled]="simulatingStripe">
+              <mat-icon *ngIf="!simulatingStripe">payment</mat-icon>
+              <span>{{ simulatingStripe ? 'Processing Stripe...' : 'Deliver Upgrade Webhook' }}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+
+    <!-- Audited Financial Ledger (Transaction Log) -->
+    <mat-card class="widget-card ledger-feed-card">
+      <div class="card-title">
+        <mat-icon class="title-icon teal-glow">receipt_long</mat-icon>
+        <span>Audited Financial Ledger</span>
+      </div>
+      
+      <div class="search-ledger-bar">
+        <mat-icon>search</mat-icon>
+        <input type="text" placeholder="Search transactional log..." [(ngModel)]="searchTerm" />
+      </div>
+
+      <div class="ledger-transactions-list">
+        <div *ngFor="let item of filteredActivity" class="ledger-item-row" [class.positive]="item.mood === 'positive'" [class.negative]="item.mood === 'negative'">
+          <div class="ledger-item-left">
+            <div class="ledger-indicator-box">
+              <mat-icon>{{ item.mood === 'positive' ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
+            </div>
+            <div class="ledger-item-details">
+              <strong>{{ item.description }}</strong>
+              <span>{{ item.time }}</span>
+            </div>
+          </div>
+          <div class="ledger-item-right">
+            <span class="category-badge">{{ item.category }}</span>
+            <strong class="item-amount">{{ formatCurrency(item.amount) }}</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="ledger-actions-footer">
+        <button mat-stroked-button (click)="triggerAiReconciliation()" class="glass-action-btn ai-reconcile-btn" [class.loading]="reconciling" style="background: rgba(13, 148, 136, 0.08); border-color: rgba(13, 148, 136, 0.2); color: #0d9488; padding: 6px 16px; font-weight: 700;">
+          <mat-icon class="ai-sparkle">auto_awesome</mat-icon> AI Reconcile
+        </button>
+        <button mat-stroked-button (click)="addAuditMemo()" class="glass-action-btn">
+          <mat-icon>note_add</mat-icon> Memo
+        </button>
+        <button mat-stroked-button (click)="appendTag()" class="glass-action-btn">
+          <mat-icon>sell</mat-icon> Tag
+        </button>
+        <button mat-stroked-button (click)="exportPdf()" class="glass-action-btn">
+          <mat-icon>picture_as_pdf</mat-icon> PDF
+        </button>
+        <button mat-stroked-button (click)="exportCsv()" class="glass-action-btn">
+          <mat-icon>table_view</mat-icon> CSV
+        </button>
+      </div>
+    </mat-card>
+
+    <!-- Scheduled Commitments & Platform Bills -->
+    <mat-card class="widget-card schedule-card">
+      <div class="card-title">
+        <mat-icon class="title-icon purple-glow">calendar_today</mat-icon>
+        <span>Upcoming Runway Commitments</span>
+      </div>
+      
+      <div class="commitments-split-deck">
+        <div class="commitment-column">
+          <h5>Recurring SaaS / Subs</h5>
+          <div *ngFor="let item of recurringItems" class="commitment-item-box">
+            <div class="item-main">
+              <strong>{{ item.label }}</strong>
+              <small>{{ item.schedule }}</small>
+            </div>
+            <span class="commitment-cost">{{ formatCurrency(item.amount) }}</span>
+          </div>
+        </div>
+
+        <div class="commitment-column">
+          <h5>Platform Bills Due</h5>
+          <div *ngFor="let bill of pendingBills" class="commitment-item-box warning-border">
+            <div class="item-main">
+              <strong>{{ bill.label }}</strong>
+              <small>Due: {{ bill.due }}</small>
+            </div>
+            <span class="commitment-cost">{{ formatCurrency(bill.amount) }}</span>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+
+    <!-- Currency Arbitrage Advisor Box -->
+    <mat-card class="widget-card arbitrage-card violet-glow" style="margin-top: 1.5rem;">
+      <div class="card-title">
+        <mat-icon class="title-icon violet-glow">swap_horiz</mat-icon>
+        <span>AI Currency Arbitrage Advisor</span>
+      </div>
+      <div class="arbitrage-body">
+        <p class="arbitrage-intro" style="font-size: 0.82rem; color: #64748b; margin-top: 0; line-height: 1.5; font-weight: 600;">
+          AI detected billing node arbitrage on your recurring subscriptions. Pay in different currencies to reduce costs.
+        </p>
+        <div class="arbitrage-proposal-card" *ngFor="let item of arbitrageProposals" style="display: flex; justify-content: space-between; align-items: center; background: rgba(255, 255, 255, 0.4); border: 1px solid rgba(15, 23, 42, 0.04); border-radius: 16px; padding: 12px 16px; margin-top: 10px;">
+          <div class="proposal-info" style="display: flex; flex-direction: column; gap: 4px;">
+            <strong style="font-size: 0.88rem; color: #0f172a;">{{ item.name }}</strong>
+            <span style="font-size: 0.78rem; color: #64748b; font-weight: 600;">
+              Local: {{ formatCurrency(item.amount) }} vs Proposed: {{ item.proposedCurrency }}{{ item.proposedAmount }}
+            </span>
+          </div>
+          <button class="action-btn accept-proposal-btn" (click)="acceptArbitrage(item)" [disabled]="item.accepted" style="background: rgba(124, 58, 237, 0.08); border-color: rgba(124, 58, 237, 0.2); color: #7c3aed; padding: 6px 14px; border-radius: 10px; font-weight: 700; font-size: 0.78rem; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; border: none; height: 32px;">
+            <mat-icon style="font-size: 1rem; width: 14px; height: 14px;">{{ item.accepted ? 'check_circle' : 'bolt' }}</mat-icon>
+            <span>{{ item.accepted ? 'Applied' : 'Swap' }}</span>
+          </button>
+        </div>
+      </div>
+    </mat-card>
+
+  </div>
+
+</div>
+
+<!-- Premium Callout Block (Only when isPremium is false) -->
+<ng-container *ngIf="!isPremium">
+  <mat-card class="upgrade-glass-panel">
+    <div class="upgrade-crown">👑</div>
+    <h3>Activate High-Compute AI Forecasting</h3>
+    <p>Unlock premium features: ThreeJS real-time ambient backgrounds, live Stripe checkout, and deep-learning expense projections.</p>
+    <button mat-raised-button class="upgrade-cta-btn" (click)="upgradeToPremium()">
+      <mat-icon>workspace_premium</mat-icon> Upgrade to Premium Mainframe
+    </button>
+  </mat-card>
+</ng-container>
+
+<!-- WebGL Backdrop (Rendered if Premium) -->
+<div class="three-background" *ngIf="isPremium" #threeContainer></div>

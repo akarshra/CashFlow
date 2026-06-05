@@ -1,0 +1,131 @@
+<div class="help-shell">
+  <!-- Dynamic alerts -->
+  <div class="custom-help-alert" *ngIf="showAlert">
+    <div class="alert-content">
+      <mat-icon>info</mat-icon>
+      <span>{{ alertMessage }}</span>
+    </div>
+  </div>
+
+  <div class="help-container">
+    <div class="help-header">
+      <span class="eyebrow"><mat-icon style="font-size: 0.95rem; width: 15px; height: 15px; vertical-align: middle;">contact_support</mat-icon> Support Core</span>
+      <h1>Help Desk & Mainframe Triage</h1>
+      <p>Consult our searchable enterprise knowledgebase, submit encrypted trouble tickets, or chat live with the mainframe broker assistant instantly.</p>
+    </div>
+
+    <div class="help-grid">
+      <!-- Left Column: FAQ Finder -->
+      <div class="help-column">
+        <mat-card class="help-glass-card faq-card">
+          <h3 class="card-title">
+            <mat-icon style="color: #06b6d4;">quiz</mat-icon> Searchable Knowledgebase
+          </h3>
+          <p class="card-subtitle">Filter questions on banking interfaces, workspaces configuration, and AI modules.</p>
+          
+          <div class="faq-search-wrapper">
+            <mat-icon class="search-icon">search</mat-icon>
+            <input type="text" placeholder="Filter questions (e.g. OCR, Plaid, SOC2)..." class="faq-search-input" [(ngModel)]="faqSearch" />
+          </div>
+
+          <!-- FAQ Accordions -->
+          <div class="faq-list">
+            <div *ngFor="let faq of filteredFaqs" class="faq-item" [class.open]="faq.isOpen" (click)="toggleFaq(faq)">
+              <div class="faq-question-row">
+                <span class="faq-question">{{ faq.question }}</span>
+                <mat-icon class="faq-arrow-icon">{{ faq.isOpen ? 'expand_less' : 'expand_more' }}</mat-icon>
+              </div>
+              
+              <div class="faq-answer" *ngIf="faq.isOpen">
+                <div class="faq-answer-inner">
+                  <p>{{ faq.answer }}</p>
+                  <span class="faq-tag">{{ faq.category }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="filteredFaqs.length === 0" class="no-faqs">
+              <mat-icon>sentiment_dissatisfied</mat-icon>
+              <span>No FAQ matches found for "{{ faqSearch }}".</span>
+            </div>
+          </div>
+        </mat-card>
+
+        <!-- Submit Ticket Form -->
+        <mat-card class="help-glass-card ticket-card">
+          <h3 class="card-title">
+            <mat-icon style="color: #5b5fef;">assignment_late</mat-icon> Submit Mainframe Trouble Ticket
+          </h3>
+          <p class="card-subtitle">Encrypted trouble reports log directly to corporate triage ledgers.</p>
+
+          <div class="ticket-form">
+            <mat-form-field appearance="outline" class="glass-form-field full-width">
+              <mat-label>Subject / Topic Area</mat-label>
+              <input matInput [(ngModel)]="ticketSubject" placeholder="e.g. Plaid public token exchange delay" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="glass-form-field full-width">
+              <mat-label>Description of Overage Challenge</mat-label>
+              <textarea matInput rows="4" [(ngModel)]="ticketDesc" placeholder="Describe the steps to replicate your system block..."></textarea>
+            </mat-form-field>
+
+            <div class="form-row">
+              <mat-form-field appearance="outline" class="glass-form-field">
+                <mat-label>Contact Email (Read-Only)</mat-label>
+                <input matInput [(ngModel)]="ticketEmail" readonly />
+              </mat-form-field>
+              
+              <button mat-raised-button class="glow-submit-btn" style="margin-top: 0.25rem;" (click)="submitTicket()">
+                <mat-icon>send</mat-icon> File Trouble Ticket
+              </button>
+            </div>
+          </div>
+        </mat-card>
+      </div>
+
+      <!-- Right Column: Support Chatbot Simulator -->
+      <div class="help-column">
+        <mat-card class="help-glass-card chat-card">
+          <div class="chat-header-bar">
+            <div style="display: flex; align-items: center; gap: 0.65rem;">
+              <div class="avatar-status">
+                <mat-icon style="color: white; font-size: 1.5rem; width: 24px; height: 24px;">smart_toy</mat-icon>
+                <span class="online-indicator"></span>
+              </div>
+              <div>
+                <h4 style="margin: 0; color: #f8fafc; font-weight: 800; font-size: 0.95rem;">Mainframe Support Broker</h4>
+                <small style="color: #10b981; font-weight: 700; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.5px;">Agent [Online]</small>
+              </div>
+            </div>
+            <span class="chat-badge">Real-Time Core</span>
+          </div>
+
+          <!-- Chat messages body scroller -->
+          <div class="chat-body-scroller">
+            <div *ngFor="let msg of chatMessages" class="chat-bubble-wrap" [class.user-wrap]="msg.sender === 'user'">
+              <div class="chat-bubble" [ngClass]="{ 'user-bubble': msg.sender === 'user', 'agent-bubble': msg.sender === 'agent' }">
+                <p>{{ msg.text }}</p>
+                <small class="bubble-time">{{ msg.time }}</small>
+              </div>
+            </div>
+
+            <!-- Agent typing indicator -->
+            <div class="chat-bubble-wrap" *ngIf="isAgentTyping">
+              <div class="chat-bubble agent-bubble typing-bubble">
+                <div class="dot-spin"><span></span><span></span><span></span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Input bar -->
+          <div class="chat-input-bar">
+            <input type="text" placeholder="Type message (e.g. Plaid sandbox, Stripe webhook)..." class="chat-text-input" [(ngModel)]="chatInput" (keyup.enter)="sendChatMessage()" />
+            <button class="chat-send-btn" (click)="sendChatMessage()">
+              <mat-icon>send</mat-icon>
+            </button>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

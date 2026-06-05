@@ -1,0 +1,195 @@
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import './styles/premium-theme.scss';
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  min-height: 100%;
+  font-family: $font-family-primary;
+  background: $bg-secondary;
+  color: $text-primary;
+}
+
+body {
+  background: linear-gradient(180deg, #fafbfc 0%, #f1f5f9 50%, #e2e8f0 100%);
+}
+
+body.dark-theme {
+  color: #e2e8f0;
+  background: linear-gradient(180deg, #0b1220 0%, #101d34 45%, #131f3e 100%);
+}
+
+body.dark-theme .global-background {
+  background: radial-gradient(circle at top left, rgba(91, 95, 239, 0.18), transparent 25%),
+              radial-gradient(circle at bottom right, rgba(6, 182, 212, 0.16), transparent 35%),
+              linear-gradient(180deg, rgba(10, 25, 45, 0.92), rgba(15, 22, 43, 0.92));
+}
+
+body.dark-theme .mat-card,
+body.dark-theme mat-toolbar,
+body.dark-theme .page-shell {
+  background: rgba(15, 23, 42, 0.92);
+}
+
+body.dark-theme .mat-card {
+  color: #e2e8f0;
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+body.dark-theme .mat-toolbar {
+  background: rgba(15, 23, 42, 0.94) !important;
+}
+
+app-root {
+  display: block;
+  min-height: 100vh;
+  position: relative;
+}
+
+.global-background {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background: radial-gradient(circle at top left, rgba(91, 95, 239, 0.14), transparent 30%),
+              radial-gradient(circle at bottom right, rgba(6, 182, 212, 0.1), transparent 35%),
+              linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(238, 245, 255, 0.92));
+}
+
+.mat-card {
+  @include card-premium;
+  background: $surface-elevated;
+  color: $text-primary;
+  transform-style: preserve-3d;
+  animation: float-3d 12s ease-in-out infinite alternate;
+}
+
+.hero-panel,
+.feature-card,
+.overview-card,
+.invoice-card,
+.analytics-card,
+.insight-card {
+  transform-style: preserve-3d;
+  animation: float-3d 12s ease-in-out infinite alternate;
+}
+
+@keyframes float-3d {
+  0% {
+    transform: translateY(0) rotateX(0deg) rotateY(0deg);
+    box-shadow: 0 22px 54px rgba(16, 42, 67, 0.06);
+  }
+  50% {
+    transform: translateY(-6px) rotateX(0.6deg) rotateY(0.6deg);
+    box-shadow: 0 26px 60px rgba(16, 42, 67, 0.08);
+  }
+  100% {
+    transform: translateY(0) rotateX(0deg) rotateY(0deg);
+    box-shadow: 0 22px 54px rgba(16, 42, 67, 0.06);
+  }
+}
+
+.mat-raised-button.mat-primary,
+.mat-raised-button.mat-accent,
+.mdc-button--raised.mat-accent {
+  @include button-premium;
+  color: #ffffff;
+}
+
+.mat-raised-button.mat-primary:hover,
+.mat-raised-button.mat-accent:hover,
+.mdc-button--raised.mat-accent:hover {
+  transform: translateY(-2px) scale(1.02);
+}
+
+.mat-form-field .mat-form-field-label {
+  color: rgba(16, 42, 67, 0.6) !important;
+}
+
+.mat-input-element {
+  color: $text-primary !important;
+}
+
+button.mat-raised-button {
+  box-shadow: 0 12px 24px rgba(16, 42, 67, 0.12);
+}
+
+.mat-card, .mat-toolbar, .mat-sidenav-container,
+.mat-form-field, .mat-list-item, .mat-table {
+  border-radius: $radius-lg;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: $text-primary;
+}
+
+p, small, span, label {
+  color: $text-secondary;
+}
+
+/* premium SSO Social Buttons custom styling */
+.sso-btn {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 48px !important;
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+  font-size: 0.95rem !important;
+  width: 100% !important;
+  transition: all 0.32s cubic-bezier(0.22, 1, 0.36, 1) !important;
+  box-shadow: 0 4px 10px rgba(16, 42, 67, 0.04) !important;
+  
+  .mdc-button__label {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 12px !important;
+    width: 100% !important;
+  }
+
+  svg {
+    flex-shrink: 0;
+    transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  &:hover {
+    transform: translateY(-2px) !important;
+    svg {
+      transform: scale(1.1);
+    }
+  }
+
+  &.google {
+    background: #ffffff !important;
+    border: 1.5px solid #e2e8f0 !important;
+    
+    .mdc-button__label {
+      color: #334155 !important;
+    }
+    
+    &:hover {
+      background: #f8fafc !important;
+      border-color: #cbd5e1 !important;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05) !important;
+    }
+  }
+
+  &.github {
+    background: #24292f !important;
+    border: 1.5px solid #24292f !important;
+    
+    .mdc-button__label {
+      color: #ffffff !important;
+    }
+    
+    &:hover {
+      background: #1b1f23 !important;
+      border-color: #1b1f23 !important;
+      box-shadow: 0 6px 16px rgba(36, 41, 47, 0.2) !important;
+    }
+  }
+}

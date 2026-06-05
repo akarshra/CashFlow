@@ -1,0 +1,129 @@
+<div class="module-container subscriptions-page">
+  <!-- Page Header -->
+  <div class="subscriptions-header">
+    <div>
+      <h2><mat-icon class="cyan-icon">subscriptions</mat-icon> SaaS Subscriptions Tracker</h2>
+      <p>Monitor recurring services, manage renewal timelines, and forecast corporate overheads.</p>
+    </div>
+    <div class="currency-selector">
+      <mat-form-field appearance="fill" class="premium-form-field">
+        <mat-label>Display currency</mat-label>
+        <mat-select [(ngModel)]="selectedCurrency">
+          <mat-option *ngFor="let currency of availableCurrencies" [value]="currency">{{ currency }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <!-- Forecast Metrics Cards Grid -->
+  <div class="metrics-grid">
+    <mat-card class="premium-card metric-card mrq-card">
+      <div class="metric-decor"></div>
+      <span class="label">MONTHLY RECURRING SPEND</span>
+      <h3 class="value">{{ formatMonthlyTotal() }}</h3>
+      <p class="subtitle">Amortized subscription liabilities auto-debited monthly.</p>
+    </mat-card>
+
+    <mat-card class="premium-card metric-card yrq-card">
+      <div class="metric-decor"></div>
+      <span class="label">ANNUAL SPEND RUNWAY</span>
+      <h3 class="value">{{ formatYearlyTotal() }}</h3>
+      <p class="subtitle">Forecasted yearly costs if subscription statuses remain unchanged.</p>
+    </mat-card>
+  </div>
+
+  <!-- Main Content Grid -->
+  <div class="sub-content-grid">
+    <!-- Active SaaS Cards Grid -->
+    <div class="subs-section">
+      <div class="section-title-row">
+        <h3><mat-icon style="color: #5b5fef;">grid_view</mat-icon> Active Subscriptions</h3>
+        <span class="active-count">{{ subscriptions.length }} SERVICES ONLINE</span>
+      </div>
+
+      <div class="subs-grid">
+        <mat-card class="premium-card sub-card" *ngFor="let item of subscriptions">
+          <div class="sub-card-glow"></div>
+          
+          <div class="sub-header">
+            <div class="brand-badge">
+              <mat-icon>{{ getBrandIcon(item.name) }}</mat-icon>
+            </div>
+            <div class="sub-cost-info">
+              <span class="sub-amount">{{ formatAmount(item.amount) }}</span>
+              <span class="sub-cycle">{{ item.cycle }}</span>
+            </div>
+          </div>
+
+          <div class="sub-body">
+            <h4 class="sub-name">{{ item.name }}</h4>
+            <p class="sub-billing">Next billing: {{ item.nextBillingDate }}</p>
+          </div>
+
+          <!-- Circular Progress SVG renewal indicator -->
+          <div class="renewal-progress">
+            <div class="circular-chart-wrapper">
+              <svg viewBox="0 0 36 36" class="circular-chart">
+                <path class="circle-bg"
+                  d="M18 2.0845
+                    a 15.9155 15.9155 0 0 1 0 31.831
+                    a 15.9155 15.9155 0 0 1 0 -31.831"
+                />
+                <path class="circle"
+                  [attr.stroke-dasharray]="getDaysPercent(item.nextBillingDate) + ', 100'"
+                  d="M18 2.0845
+                    a 15.9155 15.9155 0 0 1 0 31.831
+                    a 15.9155 15.9155 0 0 1 0 -31.831"
+                />
+              </svg>
+              <div class="days-inside">
+                <strong>{{ getDaysRemaining(item.nextBillingDate) }}</strong>
+                <span>DAYS</span>
+              </div>
+            </div>
+            <span class="days-subtitle">Renewal countdown</span>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+
+    <!-- Create Subscription Card -->
+    <div class="creation-section">
+      <mat-card class="premium-card creation-card">
+        <div class="card-title-row">
+          <h3><mat-icon style="color: #06b6d4;">add_box</mat-icon> Register Service</h3>
+          <span class="badge">Autopay Sync</span>
+        </div>
+        
+        <div class="fields-stack">
+          <mat-form-field appearance="outline" class="premium-field">
+            <mat-label>Service Name</mat-label>
+            <input matInput [(ngModel)]="newSubscription.name" placeholder="e.g. GitHub Copilot" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="premium-field">
+            <mat-label>Billing Amount (INR)</mat-label>
+            <input matInput type="number" [(ngModel)]="newSubscription.amount" placeholder="0.00" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="premium-field">
+            <mat-label>Billing Interval</mat-label>
+            <mat-select [(ngModel)]="newSubscription.cycle">
+              <mat-option value="monthly">Monthly</mat-option>
+              <mat-option value="yearly">Yearly</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="premium-field">
+            <mat-label>Next Renewal Date</mat-label>
+            <input matInput type="date" [(ngModel)]="newSubscription.nextBillingDate" />
+          </mat-form-field>
+        </div>
+
+        <button mat-raised-button class="premium-action-btn" (click)="createSubscription()">
+          <mat-icon>bolt</mat-icon> Bind Subscription
+        </button>
+      </mat-card>
+    </div>
+  </div>
+</div>

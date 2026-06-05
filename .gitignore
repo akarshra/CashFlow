@@ -1,0 +1,35 @@
+# Environment files (IMPORTANT)
+.env
+.env.*
+!.env.example
+
+# Node / Angular
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+frontend/.idea/
+frontend/package-lock.json
+frontend/yarn.lock
+
+# Java / Maven
+backend/target/
+*.log
+*.class
+*.jar
+*.war
+
+# IDE / OS
+.vs/
+*.user
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+.DS_Store
+.idea/
+.vscode/
+
+# Legacy build artifacts
+/bin/
+/obj/

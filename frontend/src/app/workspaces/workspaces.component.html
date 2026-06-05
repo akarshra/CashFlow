@@ -1,0 +1,197 @@
+<div class="module-container workspaces-page">
+  <!-- Page Header -->
+  <div class="workspace-header">
+    <div>
+      <h2><mat-icon class="gold-icon">group</mat-icon> Collaborative Workspace Hub</h2>
+      <p>Invite stakeholders, define shared budget ledger boundaries, and align corporate assets.</p>
+    </div>
+  </div>
+
+  <!-- Live Workspace Presence Bar -->
+  <div class="notify-row" style="background: rgba(91, 95, 239, 0.04); border: 1px solid rgba(91, 95, 239, 0.12); border-radius: 16px; padding: 1rem 1.5rem; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <mat-icon style="color: #5b5fef;">wifi_tethering</mat-icon>
+      <div>
+        <h4 style="margin: 0; color: #102a43; font-weight: 800; font-size: 0.92rem;">Active Workspace Channel Presence</h4>
+        <small style="color: #475569;">Collaborators active inside your shared ledgers right now.</small>
+      </div>
+    </div>
+    
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <div *ngFor="let member of activePresence" [matTooltip]="member.email" style="width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #5b5fef 0%, #06b6d4 100%); color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.85rem; border: 2px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); position: relative;">
+        {{ member.initials }}
+        <span style="position: absolute; bottom: 0; right: 0; width: 10px; height: 10px; border-radius: 50%; background: #10b981; border: 1.5px solid white;"></span>
+      </div>
+      
+      <!-- Seeding yourself -->
+      <div [matTooltip]="'You (Active)'" style="width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #7c3aed 0%, #f59e0b 100%); color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.85rem; border: 2px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); position: relative;">
+        ME
+        <span style="position: absolute; bottom: 0; right: 0; width: 10px; height: 10px; border-radius: 50%; background: #10b981; border: 1.5px solid white;"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Workspace Controls & Invite Panels Split -->
+  <div class="workspace-grid-split">
+    <!-- Invitation Form Card -->
+    <mat-card class="premium-card invite-card">
+      <div class="card-title-row">
+        <h3><mat-icon style="color: #06b6d4;">person_add</mat-icon> Provision Workspace Member</h3>
+        <span class="badge">SMTP Verified</span>
+      </div>
+      <p class="subtitle-text">Provision secure access permissions to high-fidelity ledgers immediately by adding contact details.</p>
+
+      <div class="fields-stack">
+        <!-- Budget Ledger Select -->
+        <mat-form-field appearance="outline" class="premium-field">
+          <mat-label>Select Target Ledger Workspace</mat-label>
+          <mat-select [(ngModel)]="selectedBudgetId">
+            <mat-option *ngFor="let budget of budgets" [value]="budget.id">
+              {{ budget.name }} (₹{{ budget.amount.toLocaleString() }})
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!-- Collaborator email -->
+        <mat-form-field appearance="outline" class="premium-field">
+          <mat-label>Collaborator Contact Email</mat-label>
+          <input matInput type="email" [(ngModel)]="collaboratorEmail" placeholder="e.g. sarah@company.com" />
+          <mat-icon matSuffix>mail</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <button mat-raised-button class="premium-action-btn" (click)="shareBudget()">
+        <mat-icon>bolt</mat-icon> Delegate Ledger Authority
+      </button>
+    </mat-card>
+
+    <!-- Active Teams Overview Card -->
+    <mat-card class="premium-card active-teams-card animate-float">
+      <div class="glow-bg"></div>
+      <div class="teams-content">
+        <span class="teams-label">COOPERATIVE LEDGERS ROSTER</span>
+        <h3 class="teams-value">{{ budgets.length }} Active</h3>
+        <p class="teams-subtitle">All shared and self-owned ledger boundaries dynamically propagate database triggers automatically to active teammates.</p>
+        <div class="teams-orb"></div>
+      </div>
+    </mat-card>
+
+    <!-- Teammate Audio Sandbox (WebRTC Voice) Card -->
+    <mat-card class="premium-card audio-sandbox-card">
+      <div class="glow-bg blue-glow"></div>
+      <div class="sandbox-content">
+        <div class="card-title-row">
+          <h3><mat-icon style="color: #6366f1;">settings_voice</mat-icon> Team Audio Sandbox</h3>
+          <span class="badge webrtc-badge" [class.connected]="voiceConnected">
+            {{ voiceConnected ? 'WebRTC Live' : 'Offline' }}
+          </span>
+        </div>
+        <p class="subtitle-text">Join live multi-user secure voice bridges within active workspace boundaries immediately.</p>
+
+        <!-- Unconnected view -->
+        <div class="voice-unconnected-view" *ngIf="!voiceConnected">
+          <div class="offline-circle">
+            <mat-icon class="pulse-icon">mic_off</mat-icon>
+          </div>
+          <button mat-raised-button class="premium-action-btn voice-btn" (click)="connectVoice()">
+            <mat-icon>sensors</mat-icon> Connect to Channel
+          </button>
+        </div>
+
+        <!-- Connected view -->
+        <div class="voice-connected-view" *ngIf="voiceConnected">
+          <div class="voice-status-bar">
+            <span class="latency"><mat-icon>wifi_tethering</mat-icon> {{ simulatedLatency }}ms Ping</span>
+            <span class="encryption"><mat-icon>security</mat-icon> DTLS-SRTP E2E</span>
+          </div>
+
+          <!-- Pulsing Audio Waveform SVG-like bars -->
+          <div class="audio-waveform-container">
+            <div class="wave-bar" *ngFor="let h of waveBars" [style.height.px]="h" [class.muted]="voiceMuted"></div>
+          </div>
+
+          <!-- Active Speakers bubbles -->
+          <div class="active-speakers-list">
+            <div class="speaker-bubble" *ngFor="let name of activeSpeakers">
+              <div class="mini-pulse-ring animate-ping"></div>
+              <span class="speaker-name">{{ name }}</span>
+              <mat-icon class="mic-status-icon">mic</mat-icon>
+            </div>
+            <div class="speaker-bubble silent" *ngIf="!activeSpeakers.length">
+              <span class="speaker-name">Silence on Channel</span>
+              <mat-icon class="mic-status-icon muted">mic_off</mat-icon>
+            </div>
+          </div>
+
+          <!-- Controls panel -->
+          <div class="voice-action-controls">
+            <button mat-mini-fab class="control-btn mute-btn" [class.is-muted]="voiceMuted" (click)="toggleMute()">
+              <mat-icon>{{ voiceMuted ? 'mic_off' : 'mic' }}</mat-icon>
+            </button>
+            <button mat-raised-button class="control-btn disconnect-btn" (click)="disconnectVoice()">
+              <mat-icon>call_end</mat-icon> Disconnect
+            </button>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
+  <!-- Active Workspaces / Teams List Grid -->
+  <div class="workspaces-roster-section">
+    <div class="roster-title-row">
+      <h3>Active Team Ledgers</h3>
+      <span class="count-badge">Security Isolated</span>
+    </div>
+
+    <div class="workspace-cards-grid">
+      <div *ngIf="!budgets.length" class="empty-state">
+        <mat-icon>group_off</mat-icon>
+        <p>No workspace ledgers have been created yet. Establish budgets to invite collaborators.</p>
+      </div>
+
+      <mat-card class="premium-card workspace-list-card" *ngFor="let budget of budgets">
+        <div class="decor-line"></div>
+        
+        <div class="card-top">
+          <div class="workspace-info">
+            <div class="avatar-box">
+              <mat-icon>corporate_fare</mat-icon>
+            </div>
+            <div>
+              <h4>{{ budget.name }} Workspace</h4>
+              <span class="date-range">{{ budget.startDate }} — {{ budget.endDate }}</span>
+            </div>
+          </div>
+          <div class="ledger-cap">
+            <span>Limit</span>
+            <strong>₹{{ budget.amount.toLocaleString() }}</strong>
+          </div>
+        </div>
+
+        <div class="card-bottom">
+          <div class="roster-list">
+            <strong>Invited Collaborators:</strong>
+            
+            <div class="collaborator-stack">
+              <div class="collaborator-row-item" *ngFor="let email of budget.collaborators || []">
+                <div class="mini-avatar">
+                  {{ email.substring(0, 2).toUpperCase() }}
+                </div>
+                <div class="details">
+                  <span class="name">{{ email }}</span>
+                  <span class="perm">Read / Write Permission</span>
+                </div>
+                <span class="active-dot"><mat-icon>verified</mat-icon></span>
+              </div>
+              
+              <div class="no-collabs" *ngIf="!(budget.collaborators || []).length">
+                <span>No teammates added yet. Utilize invitation panel to invite colleagues.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>

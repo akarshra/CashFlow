@@ -1,0 +1,227 @@
+<header class="global-navbar-container">
+  <div class="navbar-inner">
+    <!-- Left Section: Brand Logo & Name -->
+    <div class="nav-left">
+      <div class="brand-logo-wrapper" [routerLink]="isLoggedIn ? '/dashboard' : '/home'">
+        <svg class="brand-logo-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="24" height="24" rx="6" fill="url(#brandGrad)" />
+          <path d="M12 5V19M12 5L7 10M12 5L17 10" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <defs>
+            <linearGradient id="brandGrad" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#0d9488" />
+              <stop offset="1" stop-color="#06b6d4" />
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="brand-name">CashFlow</span>
+      </div>
+    </div>
+
+    <!-- Center Section: Navigation Links -->
+    <div class="nav-center" *ngIf="!isMobileMenuOpen">
+      <!-- Public Nav Links (When logged out) -->
+      <div class="nav-links-deck" *ngIf="!isLoggedIn">
+        <a routerLink="/home" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}" class="nav-link">Home</a>
+        <a routerLink="/roadmap" routerLinkActive="active-link" class="nav-link">Runway Simulator</a>
+        <a routerLink="/pricing" routerLinkActive="active-link" class="nav-link">Pricing</a>
+        <a routerLink="/about" routerLinkActive="active-link" class="nav-link">About Us</a>
+      </div>
+
+      <!-- Private Nav Links (When logged in) -->
+      <div class="nav-links-deck" *ngIf="isLoggedIn">
+        <a routerLink="/home" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}" class="nav-link">Home</a>
+        <a routerLink="/dashboard" routerLinkActive="active-link" class="nav-link">Dashboard</a>
+        <a routerLink="/expenses" routerLinkActive="active-link" class="nav-link">Expenses</a>
+        <a routerLink="/budgets" routerLinkActive="active-link" class="nav-link">Budgets</a>
+        <a routerLink="/invoices" routerLinkActive="active-link" class="nav-link">Reports</a>
+        <a routerLink="/pricing" routerLinkActive="active-link" class="nav-link">Pricing</a>
+        
+        <!-- More Dropdown Trigger -->
+        <button [matMenuTriggerFor]="moreMenu" class="nav-link more-dropdown-trigger">
+          <span>More</span> <mat-icon class="drop-icon">keyboard_arrow_down</mat-icon>
+        </button>
+        <mat-menu #moreMenu="matMenu" class="premium-mat-menu">
+          <a mat-menu-item routerLink="/incomes">
+            <mat-icon style="color: #10b981;">trending_up</mat-icon> <span>Income Streams</span>
+          </a>
+          <a mat-menu-item routerLink="/subscriptions">
+            <mat-icon style="color: #6366f1;">autorenew</mat-icon> <span>SaaS Subscriptions</span>
+          </a>
+          <a mat-menu-item routerLink="/investments">
+            <mat-icon style="color: #f59e0b;">account_balance</mat-icon> <span>Investments Portal</span>
+          </a>
+          <a mat-menu-item routerLink="/goals">
+            <mat-icon style="color: #06b6d4;">track_changes</mat-icon> <span>Savings Goals</span>
+          </a>
+          <a mat-menu-item routerLink="/workspaces">
+            <mat-icon style="color: #ec4899;">groups</mat-icon> <span>Workspace Hub</span>
+          </a>
+          <a mat-menu-item routerLink="/bank-sync">
+            <mat-icon style="color: #8b5cf6;">sync</mat-icon> <span>Bank Integration</span>
+          </a>
+          <mat-divider *ngIf="isAdmin"></mat-divider>
+          <a mat-menu-item routerLink="/admin" *ngIf="isAdmin">
+            <mat-icon style="color: #ef4444;">admin_panel_settings</mat-icon> <strong>Admin Dashboard</strong>
+          </a>
+        </mat-menu>
+      </div>
+    </div>
+
+    <!-- Right Section: Actions & Avatar Profile -->
+    <div class="nav-right">
+      <!-- Search bar -->
+      <div class="search-bar-wrapper">
+        <mat-icon class="search-icon">search</mat-icon>
+        <input type="text" placeholder="Search transactions, expenses..." [(ngModel)]="searchQuery" (keyup.enter)="onSearchSubmit()" />
+      </div>
+
+      <!-- Action items stack -->
+      <div class="action-buttons-stack">
+        <!-- Theme toggle -->
+        <button class="icon-action-btn" (click)="toggleTheme()" matTooltip="Toggle theme preview">
+          <mat-icon>{{ themeMode === 'light' ? 'dark_mode' : 'light_mode' }}</mat-icon>
+        </button>
+
+        <!-- Notification bell -->
+        <button class="icon-action-btn" [matMenuTriggerFor]="notificationMenu" (click)="clearNotifications()" matTooltip="Notifications">
+          <mat-icon [matBadge]="unreadNotifications" [matBadgeHidden]="unreadNotifications === 0" matBadgeColor="warn" matBadgeSize="small">notifications</mat-icon>
+        </button>
+        <mat-menu #notificationMenu="matMenu" class="premium-mat-menu notification-dropdown">
+          <div class="notification-header">
+            <strong>System Notifications</strong>
+            <span class="clear-btn" (click)="clearNotifications()">Mark read</span>
+          </div>
+          <mat-divider></mat-divider>
+          <button class="notification-item" mat-menu-item>
+            <div class="bullet-dot unread"></div>
+            <div class="message-body">
+              <span class="text">Welcome to CashFlow Premium Sandbox.</span>
+              <span class="time">Just now</span>
+            </div>
+          </button>
+          <button class="notification-item" mat-menu-item>
+            <div class="bullet-dot unread"></div>
+            <div class="message-body">
+              <span class="text">Plaid database handshake established successfully.</span>
+              <span class="time">1 hour ago</span>
+            </div>
+          </button>
+          <button class="notification-item" mat-menu-item>
+            <div class="bullet-dot"></div>
+            <div class="message-body">
+              <span class="text">Stripe simulation checkout completed.</span>
+              <span class="time">Yesterday</span>
+            </div>
+          </button>
+        </mat-menu>
+
+        <!-- User profile dropdown (when logged in) -->
+        <ng-container *ngIf="isLoggedIn">
+          <div class="user-avatar-wrapper" [matMenuTriggerFor]="profileMenu">
+            <div class="profile-avatar-circle">
+              {{ (currentUser || 'U').substring(0, 1).toUpperCase() }}
+            </div>
+          </div>
+          <mat-menu #profileMenu="matMenu" class="premium-mat-menu profile-menu-dropdown">
+            <div class="user-profile-header">
+              <span class="email-label">{{ currentUser }}</span>
+              <span class="role-badge">{{ role | uppercase }} Member</span>
+            </div>
+            <mat-divider></mat-divider>
+            <button mat-menu-item routerLink="/profile">
+              <mat-icon>person</mat-icon> <span>My Profile</span>
+            </button>
+            <button mat-menu-item routerLink="/settings">
+              <mat-icon>settings</mat-icon> <span>Settings</span>
+            </button>
+            <button mat-menu-item routerLink="/help">
+              <mat-icon>help_outline</mat-icon> <span>Help Desk</span>
+            </button>
+            <mat-divider></mat-divider>
+            <button mat-menu-item (click)="logout()">
+              <mat-icon style="color: #ef4444;">logout</mat-icon> <span style="color: #ef4444; font-weight: 700;">Logout</span>
+            </button>
+          </mat-menu>
+        </ng-container>
+
+        <!-- Logged out CTA buttons -->
+        <ng-container *ngIf="!isLoggedIn">
+          <a routerLink="/login" class="nav-signin-cta">Sign In</a>
+        </ng-container>
+      </div>
+
+      <!-- Hamburger toggle menu for tablet/mobile viewports -->
+      <button class="hamburger-menu-btn" (click)="toggleMobileMenu()">
+        <mat-icon>{{ isMobileMenuOpen ? 'close' : 'menu' }}</mat-icon>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Responsive Drawer (Mobile Menu overlay) -->
+<div class="mobile-navigation-drawer" [class.open]="isMobileMenuOpen">
+    <div class="mobile-drawer-inner">
+      <!-- Search bar inside mobile drawer -->
+      <div class="search-bar-wrapper mobile-search">
+        <mat-icon class="search-icon">search</mat-icon>
+        <input type="text" placeholder="Search..." [(ngModel)]="searchQuery" (keyup.enter)="onSearchSubmit()" />
+      </div>
+
+      <!-- Theme Switcher inside mobile drawer -->
+      <div class="mobile-theme-row">
+        <span class="theme-label">Theme Preview</span>
+        <button class="drawer-theme-toggle" (click)="toggleTheme()">
+          <mat-icon>{{ themeMode === 'light' ? 'dark_mode' : 'light_mode' }}</mat-icon>
+          <span>{{ themeMode === 'light' ? 'Dark Mode' : 'Light Mode' }}</span>
+        </button>
+      </div>
+
+      <div class="mobile-links-stack">
+        <!-- Logged out drawer links -->
+        <ng-container *ngIf="!isLoggedIn">
+          <a routerLink="/home" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}" (click)="toggleMobileMenu()" class="drawer-link">Home</a>
+          <a routerLink="/roadmap" routerLinkActive="active-link" (click)="toggleMobileMenu()" class="drawer-link">Runway Simulator</a>
+          <a routerLink="/pricing" routerLinkActive="active-link" (click)="toggleMobileMenu()" class="drawer-link">Pricing</a>
+          <a routerLink="/about" routerLinkActive="active-link" (click)="toggleMobileMenu()" class="drawer-link">About Us</a>
+          <mat-divider style="margin: 1rem 0; display: block;"></mat-divider>
+          <a routerLink="/login" (click)="toggleMobileMenu()" class="drawer-signin-btn">Sign In to Dashboard</a>
+        </ng-container>
+ 
+        <!-- Logged in drawer links -->
+        <ng-container *ngIf="isLoggedIn">
+          <a routerLink="/home" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}" (click)="toggleMobileMenu()" class="drawer-link">Home</a>
+          <a routerLink="/dashboard" routerLinkActive="active-link" (click)="toggleMobileMenu()" class="drawer-link">Dashboard</a>
+          <a routerLink="/expenses" routerLinkActive="active-link" (click)="toggleMobileMenu()" class="drawer-link">Expenses</a>
+          <a routerLink="/budgets" routerLinkActive="active-link" (click)="toggleMobileMenu()" class="drawer-link">Budgets</a>
+          <a routerLink="/invoices" routerLinkActive="active-link" (click)="toggleMobileMenu()" class="drawer-link">Reports</a>
+          <a routerLink="/pricing" routerLinkActive="active-link" (click)="toggleMobileMenu()" class="drawer-link">Pricing</a>
+          
+          <mat-divider style="margin: 0.75rem 0; display: block;"></mat-divider>
+          <span class="drawer-section-header">Workspace Channels</span>
+          
+          <a routerLink="/incomes" (click)="toggleMobileMenu()" class="drawer-sublink"><mat-icon>trending_up</mat-icon> Incomes</a>
+          <a routerLink="/subscriptions" (click)="toggleMobileMenu()" class="drawer-sublink"><mat-icon>autorenew</mat-icon> Subscriptions</a>
+          <a routerLink="/investments" (click)="toggleMobileMenu()" class="drawer-sublink"><mat-icon>account_balance</mat-icon> Investments</a>
+          <a routerLink="/goals" (click)="toggleMobileMenu()" class="drawer-sublink"><mat-icon>track_changes</mat-icon> Savings Goals</a>
+          <a routerLink="/workspaces" (click)="toggleMobileMenu()" class="drawer-sublink"><mat-icon>groups</mat-icon> Workspace Hub</a>
+          <a routerLink="/bank-sync" (click)="toggleMobileMenu()" class="drawer-sublink"><mat-icon>sync</mat-icon> Bank Sync</a>
+          
+          <mat-divider style="margin: 0.75rem 0; display: block;"></mat-divider>
+          <span class="drawer-section-header">Account settings</span>
+          
+          <a routerLink="/profile" (click)="toggleMobileMenu()" class="drawer-sublink"><mat-icon>person</mat-icon> My Profile</a>
+          <a routerLink="/settings" (click)="toggleMobileMenu()" class="drawer-sublink"><mat-icon>settings</mat-icon> Settings</a>
+          <a routerLink="/help" (click)="toggleMobileMenu()" class="drawer-sublink"><mat-icon>help_outline</mat-icon> Help Desk</a>
+
+          <mat-divider style="margin: 0.75rem 0; display: block;" *ngIf="isAdmin"></mat-divider>
+          <a routerLink="/admin" (click)="toggleMobileMenu()" class="drawer-link admin-link" *ngIf="isAdmin"><mat-icon>admin_panel_settings</mat-icon> Admin Console</a>
+ 
+          <mat-divider style="margin: 1rem 0; display: block;"></mat-divider>
+          <div class="drawer-profile-summary">
+            <span class="email">{{ currentUser }}</span>
+            <button class="drawer-logout-btn" (click)="logout()">Sign Out</button>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>

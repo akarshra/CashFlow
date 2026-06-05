@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>CashFlow</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="manifest" href="assets/manifest.webmanifest">
+  <meta name="theme-color" content="#0d9488">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💰</text></svg>">
+  <script>
+    window.addEventListener('error', function(e) {
+      var div = document.getElementById('debug-error-overlay');
+      if (!div) {
+        div = document.createElement('div');
+        div.id = 'debug-error-overlay';
+        div.style.position = 'fixed';
+        div.style.bottom = '10px';
+        div.style.left = '10px';
+        div.style.background = '#fee2e2';
+        div.style.color = '#991b1b';
+        div.style.padding = '15px';
+        div.style.border = '2px solid #ef4444';
+        div.style.borderRadius = '8px';
+        div.style.zIndex = '999999';
+        div.style.maxWidth = '90%';
+        div.style.fontFamily = 'monospace';
+        div.style.fontSize = '12px';
+        div.style.whiteSpace = 'pre-wrap';
+        div.style.boxShadow = '0 10px 25px rgba(0,0,0,0.2)';
+        document.body.appendChild(div);
+      }
+      div.innerText += '\nRuntime Error: ' + e.message + ' at ' + e.filename + ':' + e.lineno;
+    });
+    window.addEventListener('unhandledrejection', function(e) {
+      var div = document.getElementById('debug-error-overlay');
+      if (!div) {
+        div = document.createElement('div');
+        div.id = 'debug-error-overlay';
+        div.style.position = 'fixed';
+        div.style.bottom = '10px';
+        div.style.left = '10px';
+        div.style.background = '#fee2e2';
+        div.style.color = '#991b1b';
+        div.style.padding = '15px';
+        div.style.border = '2px solid #ef4444';
+        div.style.borderRadius = '8px';
+        div.style.zIndex = '999999';
+        div.style.maxWidth = '90%';
+        div.style.fontFamily = 'monospace';
+        div.style.fontSize = '12px';
+        div.style.whiteSpace = 'pre-wrap';
+        div.style.boxShadow = '0 10px 25px rgba(0,0,0,0.2)';
+        document.body.appendChild(div);
+      }
+      div.innerText += '\nUnhandled Promise Rejection: ' + (e.reason ? (e.reason.message || e.reason) : 'unknown reason');
+    });
+  </script>
+</head>
+<body>
+  <app-root></app-root>
+</body>
+</html>
+

@@ -1,0 +1,105 @@
+// Aurum+Indigo+Emerald - More Vibrant Premium Theme
+// Cohesive palette for cards, backgrounds, and controls.
+
+$primary-dark: #0f172a; // slate dark
+
+// Brand accents
+$primary-accent: #0d9488;        // warm teal
+$secondary-accent: #06b6d4;      // cyan
+$indigo-accent: #5b5fef;         // royal indigo
+$gold-accent: #f59e0b;           // gold
+
+// Status colors
+$success-color: #10b981;        // emerald green
+$warning-color: #f59e0b;        // amber yellow
+$danger-color: #ef4444;         // rose red
+
+// Text
+$text-primary: #0f172a;          // Slate 900
+$text-secondary: #475569;        // Slate 600
+$text-muted: #94a3b8;            // Slate 400
+
+// Surfaces
+$bg-primary: rgba(255, 255, 255, 0.45); // Glass background
+$bg-secondary: #f8fafc; // Warm white background base
+$surface-elevated: rgba(255, 255, 255, 0.45);
+$border-color: rgba(255, 255, 255, 0.6); // Stitch card border
+
+// Gradients
+$gradient-fresh: linear-gradient(135deg, rgba(91, 95, 239, 0.08) 0%, rgba(6, 182, 212, 0.06) 45%, rgba(13, 148, 136, 0.08) 100%);
+$gradient-accent: linear-gradient(135deg, $primary-accent 0%, $secondary-accent 60%, $indigo-accent 100%);
+$gradient-success: linear-gradient(135deg, $success-color 0%, #34d399 100%);
+
+// Shadows
+$shadow-sm: 0 4px 12px rgba(13, 148, 136, 0.08);
+$shadow-md: 0 10px 30px rgba(15, 23, 42, 0.06);
+$shadow-lg: 0 15px 35px rgba(15, 23, 42, 0.03);
+
+$font-family-primary: 'Inter', 'Segoe UI', sans-serif;
+$font-family-mono: 'Fira Code', monospace;
+
+$radius-sm: 8px;
+$radius-md: 10px;
+$radius-lg: 16px;
+$radius-xl: 28px;
+
+$transition-smooth: border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+
+@mixin card-premium {
+  background: $bg-primary;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1.5px solid $border-color;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-lg;
+  transition: $transition-smooth;
+  overflow: hidden;
+
+  &:hover {
+    box-shadow: 0 25px 50px rgba(13, 148, 136, 0.08);
+    border-color: rgba(13, 148, 136, 0.25);
+    transform: translateY(-4px);
+  }
+}
+
+@mixin button-premium {
+  background: $gradient-accent;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: $radius-md;
+  padding: 0.85rem 1.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  cursor: pointer;
+  transition: $transition-smooth;
+  box-shadow: 0 10px 24px rgba(16, 42, 67, 0.12);
+
+  &:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 18px 36px rgba(16, 42, 67, 0.18);
+    border-color: rgba(255, 255, 255, 0.45);
+  }
+}
+
+// Global Core Overrides
+html, body {
+  width: 100%;
+  min-height: 100%;
+  font-family: $font-family-primary;
+  background-color: $bg-secondary;
+  color: $text-primary;
+}
+
+body {
+  background-image: radial-gradient(circle at top left, rgba(91, 95, 239, 0.16), transparent 40%),
+                    radial-gradient(circle at bottom right, rgba(6, 182, 212, 0.12), transparent 40%);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: $text-primary;
+}
+
+p, span, label {
+  color: $text-secondary;
+}

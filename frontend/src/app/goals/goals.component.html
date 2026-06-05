@@ -1,0 +1,169 @@
+<div class="module-container goals-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <h2><mat-icon class="gold-icon">emoji_events</mat-icon> Savings Goals Roster</h2>
+    <p>Gamify savings checkpoints, simulate future financial pathways, and gather AI projections.</p>
+  </div>
+
+  <!-- AI Forecast Card -->
+  <mat-card class="premium-card forecast-card">
+    <div class="ai-orb"></div>
+    <div class="forecast-card-header">
+      <h3>
+        <mat-icon class="ai-glow-icon">psychology</mat-icon> 
+        <span>CashFlow AI Projections</span>
+      </h3>
+      <button mat-stroked-button class="refresh-ai-btn" (click)="loadForecast()">
+        <mat-icon>refresh</mat-icon> Refresh Model
+      </button>
+    </div>
+    
+    <div class="forecast-body">
+      <ng-container *ngIf="forecastBullets.length > 1; else forecastText">
+        <ul class="forecast-list">
+          <li *ngFor="let bullet of forecastBullets">{{ bullet }}</li>
+        </ul>
+      </ng-container>
+      <ng-template #forecastText>
+        <p>{{ forecast }}</p>
+      </ng-template>
+    </div>
+  </mat-card>
+
+  <!-- Summary Tiles -->
+  <div class="goals-summary">
+    <div class="summary-tile">
+      <span class="tile-label">TOTAL ACTIVE GOALS</span>
+      <strong>{{ goals.length }}</strong>
+    </div>
+    <div class="summary-tile">
+      <span class="tile-label">TOP CHECKPOINT PROGRESS</span>
+      <strong>{{ topProgress() }}%</strong>
+    </div>
+    <div class="summary-tile">
+      <span class="tile-label">NEXT MILESTONE TIER</span>
+      <strong>{{ nextReward() }}</strong>
+    </div>
+  </div>
+
+  <!-- Main Grid Layout split -->
+  <div class="goals-content-grid">
+    <!-- Form Card -->
+    <mat-card class="premium-card goal-form-card">
+      <div class="form-title-row">
+        <h3><mat-icon style="color: #06b6d4;">flag</mat-icon> Establish Savings Milestone</h3>
+        <span class="badge">Liquid Vault</span>
+      </div>
+
+      <div class="fields-stack">
+        <mat-form-field appearance="outline" class="premium-field">
+          <mat-label>Goal Name</mat-label>
+          <input matInput [(ngModel)]="newGoal.name" placeholder="e.g. New Car, House fund" />
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline" class="premium-field">
+          <mat-label>Milestone Category</mat-label>
+          <mat-select [(ngModel)]="newGoal.category">
+            <mat-option value="Emergency">Emergency reserves</mat-option>
+            <mat-option value="Vehicle">Vehicle Acquisition</mat-option>
+            <mat-option value="Travel">Business / Travel Travel</mat-option>
+            <mat-option value="Home">Real Estate Reserves</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="premium-field">
+          <mat-label>Target Limit (INR)</mat-label>
+          <input matInput type="number" [(ngModel)]="newGoal.targetAmount" placeholder="0.00" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="premium-field">
+          <mat-label>Starting Base Deposit (INR)</mat-label>
+          <input matInput type="number" [(ngModel)]="newGoal.currentAmount" placeholder="0.00" />
+        </mat-form-field>
+      </div>
+
+      <button mat-raised-button class="premium-action-btn" (click)="createGoal()">
+        <mat-icon>save</mat-icon> Lock Milestone
+      </button>
+    </mat-card>
+
+    <!-- Goals cards list -->
+    <div class="goals-roster">
+      <mat-card class="premium-card goal-card" 
+                *ngFor="let goal of goals" 
+                [id]="'goal-card-' + goal.id"
+                [class.completed]="percentageCompleted(goal) >= 100">
+        
+        <div class="goal-decor-bar"></div>
+        
+        <div class="goal-main-header">
+          <div class="goal-info">
+            <div class="icon-avatar" [style.background]="percentageCompleted(goal) >= 100 ? 'rgba(245, 158, 11, 0.12)' : 'rgba(91, 95, 239, 0.1)'">
+              <mat-icon [style.color]="percentageCompleted(goal) >= 100 ? '#f59e0b' : '#5b5fef'">
+                {{ getGoalIcon(goal.category) }}
+              </mat-icon>
+            </div>
+            <div>
+              <h3>{{ goal.name }}</h3>
+              <p class="goal-subtitle">{{ goal.category }}</p>
+            </div>
+          </div>
+          <span [class]="goalBadgeClass(goal)">{{ goalTier(goal) }}</span>
+        </div>
+
+        <div class="goal-indicator-row">
+          <!-- Circular Ring Progress -->
+          <div class="circular-chart-wrapper">
+            <svg viewBox="0 0 36 36" class="circular-chart">
+              <path class="circle-bg"
+                d="M18 2.0845
+                  a 15.9155 15.9155 0 0 1 0 31.831
+                  a 15.9155 15.9155 0 0 1 0 -31.831"
+              />
+              <path class="circle"
+                [style.stroke]="percentageCompleted(goal) >= 100 ? '#f59e0b' : '#5b5fef'"
+                [attr.stroke-dasharray]="percentageCompleted(goal) + ', 100'"
+                d="M18 2.0845
+                  a 15.9155 15.9155 0 0 1 0 31.831
+                  a 15.9155 15.9155 0 0 1 0 -31.831"
+              />
+            </svg>
+            <div class="progress-lbl" [id]="'progress-text-' + goal.id">
+              <strong>{{ percentageCompleted(goal) }}%</strong>
+            </div>
+          </div>
+
+          <!-- Contribution form -->
+          <div class="contribution-deck">
+            <div class="totals-meta">
+              <div class="meta-item">
+                <span>Accumulated</span>
+                <strong>₹{{ goal.currentAmount.toLocaleString('en-IN', {minimumFractionDigits: 2}) }}</strong>
+              </div>
+              <div class="meta-item text-right">
+                <span>Target Target</span>
+                <strong>₹{{ goal.targetAmount.toLocaleString('en-IN', {minimumFractionDigits: 2}) }}</strong>
+              </div>
+            </div>
+
+            <!-- Deposit Input -->
+            <div class="deposit-form" *ngIf="percentageCompleted(goal) < 100">
+              <mat-form-field appearance="outline" class="inline-field">
+                <mat-label>Contribute (INR)</mat-label>
+                <input matInput type="number" [(ngModel)]="contributionAmounts[goal.id]" placeholder="0.00" />
+              </mat-form-field>
+              <button mat-mini-fab class="save-deposit-btn" (click)="contribute(goal)">
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
+            
+            <div class="unlocked-msg" *ngIf="percentageCompleted(goal) >= 100">
+              <mat-icon>stars</mat-icon>
+              <span>Milestone Completed! Achievement unlocked.</span>
+            </div>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>
